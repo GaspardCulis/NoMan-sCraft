@@ -1,29 +1,29 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "nomanscraft",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "No Man's Craft",
+  "description": "Realise your dreams of space exploration in an infinite universe, by GOING VROOM VROOM in BIG spaceship",
   "authors": [
-    "Me!"
+    "gasdev"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/GaspardCulis/NoMan-sCraft"
   },
 
-  "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "license": "MIT",
+  "icon": "assets/nomanscraft/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "net.gasdev.nomanscraft.Main"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "nomanscraft.mixins.json"
   ],
 
   "depends": {
