@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.gasdev.nomanscraft.Main"
+      "net.gasdev.nomanscraft.NoMansCraft"
     ]
   },
   "mixins": [
