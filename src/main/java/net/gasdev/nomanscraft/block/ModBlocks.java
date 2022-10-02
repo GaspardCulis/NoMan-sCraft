@@ -13,8 +13,11 @@ import net.minecraft.util.registry.Registry;
 
 public class ModBlocks {
 
-    public static final Block MONEY_BLOCK = registerBlock("money_block",
-            new Block(FabricBlockSettings.of(Material.COBWEB).requiresTool().slipperiness(0.1f).collidable(false)), ItemGroup.DECORATIONS);
+    public static final Block CHEESE_BLOCK = registerBlock("cheese_block",
+            new Block(FabricBlockSettings.of(Material.SPONGE)
+                    .strength(1f)
+                    .requiresTool()
+            ), ItemGroup.DECORATIONS);
 
     private static Item registerBlockItem(String name, Block block, ItemGroup group) {
         return Registry.register(Registry.ITEM, new Identifier(NoMansCraft.MOD_ID, name),
