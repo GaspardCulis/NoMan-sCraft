@@ -3,6 +3,7 @@ package net.gasdev.nomanscraft.block;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.gasdev.nomanscraft.NoMansCraft;
+import net.gasdev.nomanscraft.item.ModItemGroup;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
@@ -17,7 +18,7 @@ public class ModBlocks {
             new Block(FabricBlockSettings.of(Material.SPONGE)
                     .strength(1f)
                     .requiresTool()
-            ), ItemGroup.DECORATIONS);
+            ), ModItemGroup.NO_MANS_CRAFT);
 
     private static Item registerBlockItem(String name, Block block, ItemGroup group) {
         return Registry.register(Registry.ITEM, new Identifier(NoMansCraft.MOD_ID, name),

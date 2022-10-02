@@ -1,4 +1,6 @@
 {
   "item.nomanscraft.steel_ingot": "Steel ingot",
-  "block.nomanscraft.cheese_block": "Cheese block"
+  "block.nomanscraft.cheese_block": "Cheese block",
+
+  "itemGroup.nomanscraft.nomanscraft": "No Man's Craft"
 }

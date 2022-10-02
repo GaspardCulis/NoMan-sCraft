@@ -9,7 +9,7 @@ import net.minecraft.util.registry.Registry;
 
 public class ModItems {
     public static final Item STEEL_INGOT = registerItem("steel_ingot",
-            new Item(new FabricItemSettings().group(ItemGroup.MATERIALS)));
+            new Item(new FabricItemSettings().group(ModItemGroup.NO_MANS_CRAFT)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(NoMansCraft.MOD_ID, name), item);
