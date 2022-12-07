@@ -21,7 +21,6 @@ import java.util.List;
  *
  * License: <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>
  * @author Juuz
- * Thx for ur big brain dude - Gasdev
  */
 @FunctionalInterface
 public interface ImplementedInventory extends SidedInventory {

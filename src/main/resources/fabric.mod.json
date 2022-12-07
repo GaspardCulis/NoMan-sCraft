@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "net.gasdev.nomanscraft.NoMansCraft"
+    ],
+    "client": [
+      "net.gasdev.nomanscraft.NoMansCraftClient"
     ]
   },
   "mixins": [
