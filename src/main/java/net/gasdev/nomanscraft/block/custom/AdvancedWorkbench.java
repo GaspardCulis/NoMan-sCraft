@@ -64,4 +64,6 @@ public class AdvancedWorkbench extends BlockWithEntity implements BlockEntityPro
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return checkType(type, ModBlockEntities.ADVANCED_WORKBENCH, AdvancedWorkbenchBlockEntity::tick);
     }
+
+
 }
