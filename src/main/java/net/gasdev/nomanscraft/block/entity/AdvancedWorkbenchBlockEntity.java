@@ -99,10 +99,12 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
     }
 
     private static void craftItem(AdvancedWorkbenchBlockEntity blockEntity) {
-        blockEntity.inventory.set(10, new ItemStack(Items.DIAMOND));
-        for (int i = 0; i < 10; i++) {
-            blockEntity.inventory.set(i, ItemStack.EMPTY);
+        if (blockEntity.inventory.get(9).getCount() > 0) {
+            blockEntity.inventory.get(9).increment(1);
+        } else {
+            blockEntity.inventory.set(9, new ItemStack(Items.DIAMOND));
         }
+        blockEntity.inventory.get(0).decrement(1);
         blockEntity.progress = 0;
     }
 
@@ -110,11 +112,11 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
         // Test recipe
         boolean hasTestCraft = blockEntity.getStack(0).getItem() == Items.SAND;
 
-        return hasTestCraft && blockEntity.canInsertIntoOutputSlot(new ItemStack(Items.DIAMOND_BLOCK), null);
+        return hasTestCraft && blockEntity.canInsertIntoOutputSlot(new ItemStack(Items.DIAMOND), null);
     }
 
     private boolean canInsertIntoOutputSlot(ItemStack stack, @Nullable Direction dir) {
-        ItemStack itemStack = this.inventory.get(10);
+        ItemStack itemStack = this.inventory.get(9);
         if (itemStack.isEmpty()) return true;
         if (!itemStack.isItemEqualIgnoreDamage(stack)) return false;
         return itemStack.getCount() + stack.getCount() <= stack.getMaxCount();

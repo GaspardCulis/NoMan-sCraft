@@ -39,7 +39,7 @@ public class AdvancedWorkbenchScreen extends HandledScreen<AdvancedWorkbenchScre
     private void renderProgressBar(MatrixStack matrices, int x, int y) {
         float progress = handler.getProgressRatio();
         int width = (int) (progress * 33);
-        drawTexture(matrices, x+73, y+35, 176, 0, width, 16);
+        drawTexture(matrices, x+89, y+35, 176, 0, width, 16);
     }
 
     @Override

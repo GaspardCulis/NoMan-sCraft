@@ -76,15 +76,15 @@ public class AdvancedWorkbenchScreenHandler extends ScreenHandler {
 
     private void initSlots(Inventory inventory) {
         // Ingredient slots
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                this.addSlot(new Slot(inventory, j + i * 3, 12 + j * 18, 18 + i * 18));
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 4; j++) {
+                this.addSlot(new Slot(inventory, j + i * 4, 12 + j * 18, 26 + i * 18));
             }
         }
         // Blueprint slot
-        this.addSlot(new Slot(inventory, 9, 79, 58));
+        this.addSlot(new Slot(inventory, 8, 95, 58));
         // Result slot
-        this.addSlot(new Slot(inventory, 10, 120, 35));
+        this.addSlot(new Slot(inventory, 9, 136, 35));
     }
 
     private void addPlayerInventory(PlayerInventory playerInventory) {
