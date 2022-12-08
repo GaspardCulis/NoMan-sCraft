@@ -1,5 +1,8 @@
 {
   "variants": {
-    "": {"model":  "nomanscraft:block/advanced_workbench" }
+    "facing=north": {"model":  "nomanscraft:block/advanced_workbench" },
+    "facing=south": {"model":  "nomanscraft:block/advanced_workbench",  "y":  180 },
+    "facing=east": {"model":  "nomanscraft:block/advanced_workbench",  "y":  90 },
+    "facing=west": {"model":  "nomanscraft:block/advanced_workbench",  "y":  270 }
   }
 }

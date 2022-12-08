@@ -26,6 +26,7 @@ public class ModBlocks {
     public static final Block ADVANCED_WORKBENCH = registerBlock("advanced_workbench",
             new AdvancedWorkbench(FabricBlockSettings.of(Material.STONE)
                     .strength(0.5f)
+                    .sounds(BlockSoundGroup.NETHERITE)
             ), ModItemGroup.NO_MANS_CRAFT);
 
     private static Item registerBlockItem(String name, Block block, ItemGroup group) {
