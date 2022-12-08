@@ -1,5 +1,6 @@
 package net.gasdev.nomanscraft.block.custom;
 
+import net.gasdev.nomanscraft.block.ModBlocks;
 import net.gasdev.nomanscraft.block.entity.AdvancedWorkbenchBlockEntity;
 import net.gasdev.nomanscraft.block.entity.ModBlockEntities;
 import net.minecraft.block.*;
@@ -8,6 +9,7 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.StateManager;
