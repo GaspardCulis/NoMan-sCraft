@@ -110,7 +110,10 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
 
     private static boolean hasRecipe(AdvancedWorkbenchBlockEntity blockEntity) {
         // Test recipe
-        boolean hasTestCraft = blockEntity.getStack(0).getItem() == Items.SAND;
+        boolean hasTestCraft = true;
+        for (int i = 0; i < 8 && hasTestCraft; i++) {
+            hasTestCraft = hasTestCraft && blockEntity.inventory.get(i).getItem() == Items.SAND;
+        }
 
         return hasTestCraft && blockEntity.canInsertIntoOutputSlot(new ItemStack(Items.DIAMOND), null);
     }
