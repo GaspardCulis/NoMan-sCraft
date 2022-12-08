@@ -104,15 +104,17 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
         } else {
             blockEntity.inventory.set(9, new ItemStack(Items.DIAMOND));
         }
-        blockEntity.inventory.get(0).decrement(1);
+        int i = 0;
+        while(blockEntity.inventory.get(i).getCount() == 0) i++;
+        blockEntity.inventory.get(i).decrement(1);
         blockEntity.progress = 0;
     }
 
     private static boolean hasRecipe(AdvancedWorkbenchBlockEntity blockEntity) {
         // Test recipe
-        boolean hasTestCraft = true;
-        for (int i = 0; i < 8 && hasTestCraft; i++) {
-            hasTestCraft = hasTestCraft && blockEntity.inventory.get(i).getItem() == Items.SAND;
+        boolean hasTestCraft = false;
+        for (int i = 0; i < 8 && !hasTestCraft; i++) {
+            hasTestCraft = hasTestCraft || blockEntity.inventory.get(i).getItem() == Items.SAND;
         }
 
         return hasTestCraft && blockEntity.canInsertIntoOutputSlot(new ItemStack(Items.DIAMOND), null);
