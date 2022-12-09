@@ -21,7 +21,7 @@ public class ModItems {
                     new ItemStack(Items.DIAMOND))
     );
 
-    public static final Item BLUEPRINT_OP2 = registerItem("blueprint_op",
+    public static final Item BLUEPRINT_OP2 = registerItem("blueprint_op2",
             new Blueprint(
                     new FabricItemSettings().group(ModItemGroup.NO_MANS_CRAFT),
                     new ItemStack[]{new ItemStack(Items.DIRT, 3)},
