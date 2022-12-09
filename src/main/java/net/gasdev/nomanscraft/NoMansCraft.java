@@ -16,10 +16,13 @@ public class NoMansCraft implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Loading No Man's Craft");
-		ModItems.registerModItems();
+
 		ModBlocks.registerModBlocks();
+		ModItems.registerModItems();
+
 		ModBlockEntities.registerBlockEntities();
 		ModScreenHandlers.registerScreenHandlers();
+
 		LOGGER.info("No Man's Craft loaded !");
 	}
 }
