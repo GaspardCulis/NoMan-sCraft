@@ -2,13 +2,11 @@ package net.gasdev.nomanscraft.item.custom;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 
-public abstract class Blueprint extends Item {
+public class Blueprint extends Item {
 
-    private final ItemStack ingredients[];
-
-    public Blueprint(Item.Settings settings, ItemStack ingredients[]) {
+    public Blueprint(Item.Settings settings) {
         super(settings);
-        this.ingredients = ingredients;
     }
 }
