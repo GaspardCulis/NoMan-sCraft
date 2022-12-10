@@ -1,14 +1,20 @@
 package net.gasdev.nomanscraft.block.entity;
 
+import net.gasdev.nomanscraft.NoMansCraft;
+import net.gasdev.nomanscraft.recipes.BlueprintRecipe;
 import net.gasdev.nomanscraft.screen.AdvancedWorkbenchScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeInputProvider;
+import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -19,7 +25,9 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory {
+import java.util.Optional;
+
+public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory, RecipeInputProvider {
 
     public static final int INVENTORY_SIZE = 11;
     public static final int MAX_PROGRESS = 40;
@@ -86,11 +94,12 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
     public static void tick(World world, BlockPos pos, BlockState state, AdvancedWorkbenchBlockEntity blockEntity) {
         if (world.isClient()) return;
 
-        if (hasRecipe(blockEntity)) {
+        Optional<BlueprintRecipe> recipe = hasRecipe(blockEntity);
+        if (recipe.isPresent()) {
             blockEntity.progress++;
             markDirty(world, pos, state);
             if(blockEntity.progress >= MAX_PROGRESS) {
-                craftItem(blockEntity);
+                craftItem(blockEntity, recipe.get());
             }
         } else {
             blockEntity.progress = 0;
@@ -98,32 +107,49 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
         }
     }
 
-    private static void craftItem(AdvancedWorkbenchBlockEntity blockEntity) {
-        if (blockEntity.inventory.get(9).getCount() > 0) {
-            blockEntity.inventory.get(9).increment(1);
-        } else {
-            blockEntity.inventory.set(9, new ItemStack(Items.DIAMOND));
+    private static void craftItem(AdvancedWorkbenchBlockEntity blockEntity, BlueprintRecipe recipe) {
+        // Remove used ingredients
+        for (Ingredient ingredient : recipe.getIngredients()) {
+            for (int i = 0; i < blockEntity.inventory.size(); i++) {
+                ItemStack stack = blockEntity.inventory.get(i);
+                if (ingredient.test(stack)) {
+                    stack.decrement(1);
+                    break;
+                }
+            }
         }
-        int i = 0;
-        while(blockEntity.inventory.get(i).getCount() == 0) i++;
-        blockEntity.inventory.get(i).decrement(1);
+        // Add crafted item
+        blockEntity.setStack(9, new ItemStack(recipe.getOutput().getItem(),
+                blockEntity.getStack(9).getCount() + recipe.getOutput().getCount()));
+
         blockEntity.progress = 0;
     }
 
-    private static boolean hasRecipe(AdvancedWorkbenchBlockEntity blockEntity) {
-        // Test recipe
-        boolean hasTestCraft = false;
-        for (int i = 0; i < 8 && !hasTestCraft; i++) {
-            hasTestCraft = hasTestCraft || blockEntity.inventory.get(i).getItem() == Items.SAND;
+    private static Optional<BlueprintRecipe> hasRecipe(AdvancedWorkbenchBlockEntity blockEntity) {
+        SimpleInventory inventory = new SimpleInventory(blockEntity.size());
+        for (int i = 0; i < blockEntity.size(); i++) {
+            inventory.setStack(i, blockEntity.getStack(i));
         }
 
-        return hasTestCraft && blockEntity.canInsertIntoOutputSlot(new ItemStack(Items.DIAMOND), null);
+        Optional<BlueprintRecipe> match = blockEntity.getWorld().getRecipeManager().
+                getFirstMatch(BlueprintRecipe.BlueprintRecipeType.INSTANCE, inventory, blockEntity.getWorld());
+
+        if (match.isPresent() && blockEntity.canInsertIntoOutputSlot(match.get().getOutput())) {
+            return match;
+        } else {
+            return Optional.empty();
+        }
     }
 
-    private boolean canInsertIntoOutputSlot(ItemStack stack, @Nullable Direction dir) {
+    private boolean canInsertIntoOutputSlot(ItemStack stack) {
         ItemStack itemStack = this.inventory.get(9);
         if (itemStack.isEmpty()) return true;
         if (!itemStack.isItemEqualIgnoreDamage(stack)) return false;
         return itemStack.getCount() + stack.getCount() <= stack.getMaxCount();
+    }
+
+    @Override
+    public void provideRecipeInputs(RecipeMatcher finder) {
+
     }
 }

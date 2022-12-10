@@ -1,0 +1,11 @@
+{
+  "type": "nomanscraft:blueprint",
+  "ingredients": [
+    {
+      "item": "minecraft:dirt"
+    }
+  ],
+  "output": {
+    "item": "minecraft:diamond"
+  }
+}

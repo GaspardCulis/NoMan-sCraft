@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.gasdev.nomanscraft.block.ModBlocks;
 import net.gasdev.nomanscraft.block.entity.ModBlockEntities;
 import net.gasdev.nomanscraft.item.ModItems;
+import net.gasdev.nomanscraft.recipes.ModRecipes;
 import net.gasdev.nomanscraft.screen.ModScreenHandlers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,8 @@ public class NoMansCraft implements ModInitializer {
 
 		ModBlockEntities.registerBlockEntities();
 		ModScreenHandlers.registerScreenHandlers();
+
+		ModRecipes.registerRecipes();
 
 		LOGGER.info("No Man's Craft loaded !");
 	}

@@ -1,0 +1,14 @@
+{
+  "type": "nomanscraft:blueprint",
+  "ingredients": [
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "minecraft:red_mushroom"
+    }
+  ],
+  "output": {
+    "item": "nomanscraft:cheese_block"
+  }
+}
