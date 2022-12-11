@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.gasdev.nomanscraft.NoMansCraft;
+import net.gasdev.nomanscraft.block.entity.AdvancedWorkbenchBlockEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -34,10 +35,9 @@ public class BlueprintRecipe implements Recipe<SimpleInventory> {
     public boolean matches(SimpleInventory inventory, World world) {
         if (world.isClient()) return false;
         // Test if the ingredients required are contained in the 8 first slots of the inventory
-
         // Create a copy of the inventory
-        DefaultedList<ItemStack> inventoryCopy = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
-        for (int i = 0; i < inventory.size(); i++) {
+        DefaultedList<ItemStack> inventoryCopy = DefaultedList.ofSize(AdvancedWorkbenchBlockEntity.CRAFTING_INPUT_SIZE, ItemStack.EMPTY);
+        for (int i = AdvancedWorkbenchBlockEntity.CRAFTING_INPUT_START; i < AdvancedWorkbenchBlockEntity.CRAFTING_INPUT_END; i++) {
             inventoryCopy.set(i, inventory.getStack(i).copy());
         }
 
