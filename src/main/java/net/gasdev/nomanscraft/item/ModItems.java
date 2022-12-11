@@ -2,6 +2,7 @@ package net.gasdev.nomanscraft.item;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.gasdev.nomanscraft.NoMansCraft;
+import net.gasdev.nomanscraft.item.custom.Blueprint;
 import net.gasdev.nomanscraft.recipes.BlueprintRecipe;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,6 +15,9 @@ public class ModItems {
             new Item(new FabricItemSettings().group(ModItemGroup.NO_MANS_CRAFT)));
 
     public static final Identifier BLUEPRINT_ID = new Identifier("blueprint");
+
+    public static final Item BLUEPRINT = registerItem("blueprint",
+            new Blueprint(new FabricItemSettings().group(ModItemGroup.NO_MANS_CRAFT)));
 
 
     private static Item registerItem(String name, Item item) {

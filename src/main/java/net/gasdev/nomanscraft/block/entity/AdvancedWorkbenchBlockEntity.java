@@ -1,6 +1,7 @@
 package net.gasdev.nomanscraft.block.entity;
 
 import net.gasdev.nomanscraft.NoMansCraft;
+import net.gasdev.nomanscraft.item.ModItems;
 import net.gasdev.nomanscraft.recipes.BlueprintRecipe;
 import net.gasdev.nomanscraft.screen.AdvancedWorkbenchScreenHandler;
 import net.minecraft.block.BlockState;
@@ -29,12 +30,12 @@ import java.util.Optional;
 
 public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory, RecipeInputProvider {
 
-    public static final int INVENTORY_SIZE = 11;
+    public static final int INVENTORY_SIZE = 10;
     public static final int CRAFTING_INPUT_START = 0;
     public static final int CRAFTING_INPUT_END = 8;
     public static final int CRAFTING_INPUT_SIZE = CRAFTING_INPUT_END - CRAFTING_INPUT_START;
-    public static final int CRAFTING_BLUEPRINT_SLOT = 9;
-    public static final int CRAFTING_RESULT_SLOT = 10;
+    public static final int CRAFTING_BLUEPRINT_SLOT = 8;
+    public static final int CRAFTING_RESULT_SLOT = 9;
     public static final int MAX_PROGRESS = 40;
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
 
@@ -64,6 +65,21 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
                 return 1;
             }
         };
+    }
+
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
+        if (slot == CRAFTING_BLUEPRINT_SLOT && !stack.getItem().equals(ModItems.BLUEPRINT)) return false;
+        if (slot == CRAFTING_RESULT_SLOT) return false;
+
+        return true;
+    }
+
+    @Override
+    public boolean canExtract(int slot, ItemStack stack, Direction side) {
+        if (slot == CRAFTING_RESULT_SLOT) return true;
+
+        return false;
     }
 
     @Override
