@@ -1,6 +1,7 @@
 package net.gasdev.nomanscraft.screen;
 
 import net.gasdev.nomanscraft.block.entity.AdvancedWorkbenchBlockEntity;
+import net.gasdev.nomanscraft.item.ModItems;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -10,6 +11,7 @@ import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.tag.ItemTags;
 
 public class AdvancedWorkbenchScreenHandler extends ScreenHandler {
     private final Inventory inventory;
@@ -82,9 +84,9 @@ public class AdvancedWorkbenchScreenHandler extends ScreenHandler {
             }
         }
         // Blueprint slot
-        this.addSlot(new Slot(inventory, 8, 95, 58));
+        this.addSlot(new BlueprintSlot(inventory, 8, 95, 58));
         // Result slot
-        this.addSlot(new Slot(inventory, 9, 136, 35));
+        this.addSlot(new ResultSlot(inventory, 9, 136, 35));
     }
 
     private void addPlayerInventory(PlayerInventory playerInventory) {
@@ -98,6 +100,30 @@ public class AdvancedWorkbenchScreenHandler extends ScreenHandler {
     private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
+        }
+    }
+
+    private class BlueprintSlot extends Slot {
+        public BlueprintSlot(Inventory inventory, int index, int x, int y) {
+            super(inventory, index, x, y);
+        }
+
+        public boolean canInsert(ItemStack stack) {
+            return stack.isOf(ModItems.BLUEPRINT);
+        }
+
+        public int getMaxItemCount() {
+            return 1;
+        }
+    }
+
+    private class ResultSlot extends Slot {
+        public ResultSlot(Inventory inventory, int index, int x, int y) {
+            super(inventory, index, x, y);
+        }
+
+        public boolean canInsert(ItemStack stack) {
+            return false;
         }
     }
 }

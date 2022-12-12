@@ -171,6 +171,8 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
 
     @Override
     public void provideRecipeInputs(RecipeMatcher finder) {
-
+        for (int i = 0; i < 9; i++) {
+            finder.addInput(this.inventory.get(i));
+        }
     }
 }
