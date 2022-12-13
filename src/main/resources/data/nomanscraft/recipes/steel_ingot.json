@@ -3,5 +3,6 @@
   "ingredient": {
     "item": "minecraft:iron_ingot"
   },
-  "result": "nomanscraft:steel_ingot"
+  "result": "nomanscraft:steel_ingot",
+  "cookingtime": 500
 }
