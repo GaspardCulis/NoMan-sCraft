@@ -2,6 +2,11 @@
   "item.nomanscraft.steel_ingot": "Steel ingot",
   "block.nomanscraft.cheese_block": "Cheese block",
   "block.nomanscraft.advanced_workbench": "Advanced workbench",
+  "block.nomanscraft.cpu": "CPU",
+  "block.nomanscraft.arc_reactor": "Arc reactor",
+  "block.nomanscraft.steel_plate": "Steel plate",
+  "block.nomanscraft.blueprint": "Blueprint",
+
 
 
   "itemGroup.nomanscraft.nomanscraft": "No Man's Craft",
