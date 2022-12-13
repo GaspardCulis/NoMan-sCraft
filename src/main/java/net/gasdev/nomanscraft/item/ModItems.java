@@ -14,14 +14,20 @@ public class ModItems {
     public static final Item STEEL_INGOT = registerItem("steel_ingot",
             new Item(new FabricItemSettings().group(ModItemGroup.NO_MANS_CRAFT)));
 
-    public static final Identifier BLUEPRINT_ID = new Identifier("blueprint");
+    public static final Item STEEL_PLATE = registerItem("steel_plate",
+            new Item(new FabricItemSettings().group(ModItemGroup.NO_MANS_CRAFT)));
+
+    public static final Item CPU = registerItem("cpu",
+            new Item(new FabricItemSettings().group(ModItemGroup.NO_MANS_CRAFT)));
+
+    public static final Item ARC_REACTOR = registerItem("arc_reactor",
+            new Item(new FabricItemSettings().group(ModItemGroup.NO_MANS_CRAFT)));
 
     public static final Item BLUEPRINT = registerItem("blueprint",
             new Blueprint(new FabricItemSettings().group(ModItemGroup.NO_MANS_CRAFT)));
 
 
     private static Item registerItem(String name, Item item) {
-
         return Registry.register(Registry.ITEM, new Identifier(NoMansCraft.MOD_ID, name), item);
     }
 
