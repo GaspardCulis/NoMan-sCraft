@@ -1,7 +1,9 @@
 package net.gasdev.nomanscraft.screen;
 
+import net.gasdev.nomanscraft.NoMansCraft;
 import net.gasdev.nomanscraft.block.entity.AdvancedWorkbenchBlockEntity;
 import net.gasdev.nomanscraft.item.ModItems;
+import net.gasdev.nomanscraft.recipes.BlueprintRecipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -18,7 +20,7 @@ public class AdvancedWorkbenchScreenHandler extends ScreenHandler {
     private final PropertyDelegate propertyDelegate;
 
     public AdvancedWorkbenchScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(AdvancedWorkbenchBlockEntity.INVENTORY_SIZE), new ArrayPropertyDelegate(1));
+        this(syncId, playerInventory, new SimpleInventory(AdvancedWorkbenchBlockEntity.INVENTORY_SIZE), new ArrayPropertyDelegate(2));
     }
 
     public AdvancedWorkbenchScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
@@ -27,7 +29,7 @@ public class AdvancedWorkbenchScreenHandler extends ScreenHandler {
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);
 
-        checkDataCount(propertyDelegate, 1);
+        checkDataCount(propertyDelegate, 2);
         this.propertyDelegate = propertyDelegate;
 
         initSlots(inventory);
@@ -43,7 +45,7 @@ public class AdvancedWorkbenchScreenHandler extends ScreenHandler {
     }
 
     public float getProgressRatio() {
-        return (float) propertyDelegate.get(0) / (float) AdvancedWorkbenchBlockEntity.MAX_PROGRESS;
+        return (float) propertyDelegate.get(0) / (float) propertyDelegate.get(1);
     }
 
     @Override

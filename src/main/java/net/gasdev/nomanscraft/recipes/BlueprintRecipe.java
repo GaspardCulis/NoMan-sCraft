@@ -20,15 +20,18 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 public class BlueprintRecipe implements Recipe<SimpleInventory> {
+    public static final int DEFAULT_CRAFTING_TIME = 60;
     private final Identifier id;
     private final DefaultedList<Ingredient> ingredients;
     private final ItemStack output;
 
-    public BlueprintRecipe(Identifier id, DefaultedList<Ingredient> ingredients, ItemStack output) {
+    private final int craftingTime;
+
+    public BlueprintRecipe(Identifier id, DefaultedList<Ingredient> ingredients, ItemStack output, int craftingTime) {
         this.id = id;
         this.ingredients = ingredients;
         this.output = output;
-        NoMansCraft.LOGGER.info("New BlueprintRecipe created: " + id.toString() + " with " + ingredients.size() + " ingredients and output " + output.toString());
+        this.craftingTime = craftingTime;
     }
 
     @Override
@@ -82,6 +85,8 @@ public class BlueprintRecipe implements Recipe<SimpleInventory> {
         return id;
     }
 
+    public int getCraftingTime() { return craftingTime; }
+
     @Override
     public RecipeSerializer<?> getSerializer() {
         return BlueprintRecipeSerializer.INSTANCE;
@@ -111,7 +116,14 @@ public class BlueprintRecipe implements Recipe<SimpleInventory> {
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            return new BlueprintRecipe(id, inputs, output);
+            int craftingTime;
+            if (JsonHelper.hasNumber(json, "craftingTime")) {
+                craftingTime = JsonHelper.getInt(json, "craftingTime");
+            } else {
+                craftingTime = DEFAULT_CRAFTING_TIME;
+            }
+
+            return new BlueprintRecipe(id, inputs, output, craftingTime);
         }
 
         @Override
@@ -124,7 +136,9 @@ public class BlueprintRecipe implements Recipe<SimpleInventory> {
 
             ItemStack output = buf.readItemStack();
 
-            return new BlueprintRecipe(id, inputs, output);
+            int craftingTime = buf.readInt();
+
+            return new BlueprintRecipe(id, inputs, output, craftingTime);
         }
 
         @Override
@@ -136,6 +150,7 @@ public class BlueprintRecipe implements Recipe<SimpleInventory> {
             }
 
             buf.writeItemStack(recipe.getOutput());
+            buf.writeInt(recipe.getCraftingTime());
         }
     }
 }

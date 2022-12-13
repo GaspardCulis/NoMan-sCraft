@@ -36,11 +36,11 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
     public static final int CRAFTING_INPUT_SIZE = CRAFTING_INPUT_END - CRAFTING_INPUT_START;
     public static final int CRAFTING_BLUEPRINT_SLOT = 8;
     public static final int CRAFTING_RESULT_SLOT = 9;
-    public static final int MAX_PROGRESS = 40;
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
 
     protected final PropertyDelegate propertyDelegate;
     private int progress = 0;
+    private int maxProgress = 0;
 
     public AdvancedWorkbenchBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.ADVANCED_WORKBENCH, pos, state);
@@ -49,6 +49,7 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
             public int get(int index) {
                 switch (index) {
                     case 0: return progress;
+                    case 1: return maxProgress;
                     default: return 0;
                 }
             }
@@ -56,13 +57,14 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
             @Override
             public void set(int index, int value) {
                 switch (index) {
-                    case 0:  progress = value;
+                    case 0:  progress = value; break;
+                    case 1: maxProgress = value; break;
                 }
             }
 
             @Override
             public int size() {
-                return 1;
+                return 2;
             }
         };
     }
@@ -118,8 +120,9 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
         Optional<BlueprintRecipe> recipe = hasRecipe(blockEntity);
         if (recipe.isPresent()) {
             blockEntity.progress++;
+            blockEntity.maxProgress = recipe.get().getCraftingTime();
             markDirty(world, pos, state);
-            if(blockEntity.progress >= MAX_PROGRESS) {
+            if(blockEntity.progress >= blockEntity.maxProgress) {
                 craftItem(blockEntity, recipe.get());
             }
         } else {
