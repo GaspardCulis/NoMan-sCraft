@@ -1,0 +1,25 @@
+{
+  "type": "nomanscraft:blueprint",
+  "blueprint": "nomanscraft:blueprints/cpu",
+  "ingredients": [
+    {
+      "item": "minecraft:gold_ingot",
+      "count": 4
+    },
+    {
+      "item": "minecraft:redstone",
+      "count": 2
+    },
+    {
+      "item": "minecraft:copper_ingot"
+    },
+    {
+      "item": "minecraft:quartz",
+      "count": 2
+    }
+  ],
+  "output": {
+    "item": "nomanscraft:cpu"
+  },
+  "craftingTime": 200
+}

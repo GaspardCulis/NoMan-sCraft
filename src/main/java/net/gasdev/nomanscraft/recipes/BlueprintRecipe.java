@@ -16,6 +16,7 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -110,10 +111,20 @@ public class BlueprintRecipe implements Recipe<SimpleInventory> {
             ItemStack output = ShapedRecipe.outputFromJson(JsonHelper.getObject(json, "output"));
 
             JsonArray ingredients = JsonHelper.getArray(json, "ingredients");
-            DefaultedList<Ingredient> inputs = DefaultedList.ofSize(ingredients.size(), Ingredient.EMPTY);
+            ArrayList<Ingredient> inputs = new ArrayList<>();
 
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
+            for (int i = 0; i < ingredients.size(); i++) {
+                int count = 1;
+                if (ingredients.get(i).isJsonObject()) {
+                    JsonObject ingredient = ingredients.get(i).getAsJsonObject();
+                    if (ingredient.has("count")) {
+                        count = ingredient.get("count").getAsInt();
+                    }
+                }
+
+                for (int j = 0; j < count; j++) {
+                    inputs.add(Ingredient.fromJson(ingredients.get(i)));
+                }
             }
 
             int craftingTime;
@@ -123,7 +134,12 @@ public class BlueprintRecipe implements Recipe<SimpleInventory> {
                 craftingTime = DEFAULT_CRAFTING_TIME;
             }
 
-            return new BlueprintRecipe(id, inputs, output, craftingTime);
+            DefaultedList<Ingredient> ingredientsList = DefaultedList.ofSize(inputs.size(), Ingredient.EMPTY);
+            for (int i = 0; i < inputs.size(); i++) {
+                ingredientsList.set(i, inputs.get(i));
+            }
+
+            return new BlueprintRecipe(id, ingredientsList, output, craftingTime);
         }
 
         @Override

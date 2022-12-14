@@ -21,7 +21,7 @@ public class ModItems {
             new Item(new FabricItemSettings().group(ModItemGroup.NO_MANS_CRAFT)));
 
     public static final Item ARC_REACTOR = registerItem("arc_reactor",
-            new Item(new FabricItemSettings().group(ModItemGroup.NO_MANS_CRAFT)));
+            new Item(new FabricItemSettings().group(ModItemGroup.NO_MANS_CRAFT).maxCount(16)));
 
     public static final Item BLUEPRINT = registerItem("blueprint",
             new Blueprint(new FabricItemSettings().group(ModItemGroup.NO_MANS_CRAFT)));
