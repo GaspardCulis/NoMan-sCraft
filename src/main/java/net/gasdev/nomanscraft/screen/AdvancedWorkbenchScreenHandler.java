@@ -4,6 +4,7 @@ import net.gasdev.nomanscraft.NoMansCraft;
 import net.gasdev.nomanscraft.block.entity.AdvancedWorkbenchBlockEntity;
 import net.gasdev.nomanscraft.item.ModItems;
 import net.gasdev.nomanscraft.recipes.BlueprintRecipe;
+import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -55,8 +56,14 @@ public class AdvancedWorkbenchScreenHandler extends ScreenHandler {
         if (slot != null && slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
+            // Check if the item is blueprint
             if (index < this.inventory.size()) {
                 if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (originalStack.getItem() == ModItems.BLUEPRINT) {
+                // If the item is blueprint, try to move it to the blueprint slot
+                if (!insertItem(originalStack, AdvancedWorkbenchBlockEntity.CRAFTING_BLUEPRINT_SLOT, AdvancedWorkbenchBlockEntity.CRAFTING_BLUEPRINT_SLOT + 1, false)) {
                     return ItemStack.EMPTY;
                 }
             } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
