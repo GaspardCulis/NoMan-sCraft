@@ -30,7 +30,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory, RecipeInputProvider {
-
     public static final int INVENTORY_SIZE = 10;
     public static final int CRAFTING_INPUT_START = 0;
     public static final int CRAFTING_INPUT_END = 8;
@@ -162,12 +161,7 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
 
 
         if (match.isPresent() && blockEntity.canInsertIntoOutputSlot(match.get().getOutput())) {
-            // Check if has the right blueprint
-            if (blockEntity.getStack(CRAFTING_BLUEPRINT_SLOT).getItem().equals(ModItems.BLUEPRINT)) {
-                if (Blueprint.getStoredRecipe(blockEntity.getStack(CRAFTING_BLUEPRINT_SLOT)).compareTo(match.get().getId().toString()) == 0) {
-                    return match;
-                }
-            }
+            return match;
         }
         return Optional.empty();
     }
