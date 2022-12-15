@@ -1,6 +1,5 @@
 {
   "type": "nomanscraft:blueprint",
-  "blueprint": "nomanscraft:blueprint/cheese_block",
   "ingredients": [
     {
       "item": "minecraft:milk_bucket"

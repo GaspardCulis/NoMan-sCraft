@@ -2,6 +2,7 @@ package net.gasdev.nomanscraft.block.entity;
 
 import net.gasdev.nomanscraft.NoMansCraft;
 import net.gasdev.nomanscraft.item.ModItems;
+import net.gasdev.nomanscraft.item.custom.Blueprint;
 import net.gasdev.nomanscraft.recipes.BlueprintRecipe;
 import net.gasdev.nomanscraft.screen.AdvancedWorkbenchScreenHandler;
 import net.minecraft.block.BlockState;
@@ -158,11 +159,17 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
         Optional<BlueprintRecipe> match = blockEntity.getWorld().getRecipeManager().
                 getFirstMatch(BlueprintRecipe.BlueprintRecipeType.INSTANCE, inventory, blockEntity.getWorld());
 
+
+
         if (match.isPresent() && blockEntity.canInsertIntoOutputSlot(match.get().getOutput())) {
-            return match;
-        } else {
-            return Optional.empty();
+            // Check if has the right blueprint
+            if (blockEntity.getStack(CRAFTING_BLUEPRINT_SLOT).getItem().equals(ModItems.BLUEPRINT)) {
+                if (Blueprint.getStoredRecipe(blockEntity.getStack(CRAFTING_BLUEPRINT_SLOT)).compareTo(match.get().getId().toString()) == 0) {
+                    return match;
+                }
+            }
         }
+        return Optional.empty();
     }
 
     private boolean canInsertIntoOutputSlot(ItemStack stack) {

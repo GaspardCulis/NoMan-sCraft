@@ -5,6 +5,10 @@
   "item.nomanscraft.steel_plate": "Steel plate",
   "item.nomanscraft.blueprint": "Blueprint",
 
+  "blueprint.nomanscraft.empty": "Empty blueprint",
+  "blueprint.nomanscraft.blueprint_of": "Blueprint of ",
+    "blueprint.nomanscraft.invalid": "Invalid blueprint",
+
   "block.nomanscraft.cheese_block": "Cheese block",
   "block.nomanscraft.advanced_workbench": "Advanced workbench",
 
