@@ -34,9 +34,9 @@ public class Blueprint extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         if (user.isSneaking()) {
-            setStoredRecipe(stack, "nomanscraft:cpu");
+            setStoredRecipe(stack, "nomanscraft:steel_plate");
             // Say something to the player to indicate that the recipe has been cleared
-            user.sendMessage(Text.of("Helo"), true);
+            user.sendMessage(Text.of("Helo"), false);
         }
         return super.use(world, user, hand);
     }

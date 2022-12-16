@@ -1,0 +1,13 @@
+{
+  "type": "nomanscraft:blueprint",
+  "ingredients": [
+    {
+      "item": "nomanscraft:steel_ingot",
+      "count": 4
+    }
+  ],
+  "output": {
+    "item": "nomanscraft:steel_plate"
+  },
+  "craftingTime": 100
+}
