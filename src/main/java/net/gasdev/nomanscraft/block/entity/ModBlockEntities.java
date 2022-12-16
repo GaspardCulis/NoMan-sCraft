@@ -4,14 +4,15 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 import net.gasdev.nomanscraft.NoMansCraft;
 import net.gasdev.nomanscraft.block.ModBlocks;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class ModBlockEntities {
     public static BlockEntityType<AdvancedWorkbenchBlockEntity> ADVANCED_WORKBENCH;
 
     public static void registerBlockEntities() {
-        ADVANCED_WORKBENCH = Registry.register(Registry.BLOCK_ENTITY_TYPE,
+        ADVANCED_WORKBENCH = Registry.register(Registries.BLOCK_ENTITY_TYPE,
                 new Identifier(NoMansCraft.MOD_ID, "advanced_workbench"),
                 FabricBlockEntityTypeBuilder.create(AdvancedWorkbenchBlockEntity::new,
                         ModBlocks.ADVANCED_WORKBENCH).build(null));

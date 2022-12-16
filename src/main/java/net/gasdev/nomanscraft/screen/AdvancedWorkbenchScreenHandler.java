@@ -1,10 +1,7 @@
 package net.gasdev.nomanscraft.screen;
 
-import net.gasdev.nomanscraft.NoMansCraft;
 import net.gasdev.nomanscraft.block.entity.AdvancedWorkbenchBlockEntity;
 import net.gasdev.nomanscraft.item.ModItems;
-import net.gasdev.nomanscraft.recipes.BlueprintRecipe;
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -14,7 +11,6 @@ import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.tag.ItemTags;
 
 public class AdvancedWorkbenchScreenHandler extends ScreenHandler {
     private final Inventory inventory;
@@ -50,7 +46,7 @@ public class AdvancedWorkbenchScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public ItemStack transferSlot(PlayerEntity player, int index) {
+    public ItemStack quickMove(PlayerEntity player, int index) {
         ItemStack newStack = ItemStack.EMPTY;
         var slot = this.slots.get(index);
         if (slot != null && slot.hasStack()) {

@@ -1,10 +1,13 @@
 package net.gasdev.nomanscraft.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.gasdev.nomanscraft.NoMansCraft;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -24,7 +27,7 @@ public class AdvancedWorkbenchScreen extends HandledScreen<AdvancedWorkbenchScre
 
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - backgroundWidth) / 2;
@@ -34,6 +37,12 @@ public class AdvancedWorkbenchScreen extends HandledScreen<AdvancedWorkbenchScre
         if (handler.isCrafting()) {
             renderProgressBar(matrices, x, y);
         }
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        NoMansCraft.LOGGER.info("Mouse clicked at " + mouseX + ", " + mouseY);
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     private void renderProgressBar(MatrixStack matrices, int x, int y) {

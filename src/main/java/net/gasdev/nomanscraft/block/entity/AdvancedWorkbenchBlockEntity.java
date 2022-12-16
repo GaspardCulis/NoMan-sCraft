@@ -169,7 +169,7 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
     private boolean canInsertIntoOutputSlot(ItemStack stack) {
         ItemStack itemStack = this.inventory.get(9);
         if (itemStack.isEmpty()) return true;
-        if (!itemStack.isItemEqualIgnoreDamage(stack)) return false;
+        if (!itemStack.isItemEqual(stack)) return false;
         return itemStack.getCount() + stack.getCount() <= stack.getMaxCount();
     }
 
