@@ -20,7 +20,7 @@ public class Blueprint extends Item {
         super(settings);
     }
 
-    public void setStoredRecipe(ItemStack stack, String recipe) {
+    public static void setStoredRecipe(ItemStack stack, String recipe) {
         NbtCompound nbt = stack.getOrCreateNbt();
         nbt.putString(STORED_RECIPE_KEY, recipe);
     }
@@ -28,17 +28,6 @@ public class Blueprint extends Item {
     public static String getStoredRecipe(ItemStack stack) {
         NbtCompound nbt = stack.getOrCreateNbt();
         return nbt.getString(STORED_RECIPE_KEY);
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
-        if (user.isSneaking()) {
-            setStoredRecipe(stack, "nomanscraft:steel_plate");
-            // Say something to the player to indicate that the recipe has been cleared
-            user.sendMessage(Text.of("Helo"), false);
-        }
-        return super.use(world, user, hand);
     }
 
     @Override

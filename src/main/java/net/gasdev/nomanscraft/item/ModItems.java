@@ -31,13 +31,22 @@ public class ModItems {
 
     private static Item registerItem(String name, Item item) {
         Item registeredItem = Registry.register(Registries.ITEM, new Identifier(NoMansCraft.MOD_ID, name), item);
-        ItemGroupEvents.modifyEntriesEvent(ModItemGroup.NO_MANS_CRAFT).register(content -> {
-            content.add(new ItemStack(registeredItem));
-        });
+        ModItemGroup.register(new ItemStack(registeredItem));
         return registeredItem;
     }
 
+    private static void registerModBlueprints() {
+        ItemStack steelPlateBlueprint = new ItemStack(BLUEPRINT);
+        Blueprint.setStoredRecipe(steelPlateBlueprint, "nomanscraft:steel_plate");
+        ModItemGroup.register(steelPlateBlueprint);
+
+        ItemStack cpuBlueprint = new ItemStack(BLUEPRINT);
+        Blueprint.setStoredRecipe(cpuBlueprint, "nomanscraft:cpu");
+        ModItemGroup.register(cpuBlueprint);
+    }
+
     public static void registerModItems() {
+        registerModBlueprints();
         NoMansCraft.LOGGER.info("Registering No Man's Craft items");
     }
 

@@ -12,6 +12,7 @@ import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
@@ -35,9 +36,7 @@ public class ModBlocks {
     private static Item registerBlockItem(String name, Block block, ItemGroup group) {
         Item registeredItem =  Registry.register(Registries.ITEM, new Identifier(NoMansCraft.MOD_ID, name),
                 new BlockItem(block, new FabricItemSettings()));
-        ItemGroupEvents.modifyEntriesEvent(ModItemGroup.NO_MANS_CRAFT).register(content -> {
-            content.add(registeredItem);
-        });
+        ModItemGroup.register(new ItemStack(registeredItem));
         return registeredItem;
     }
 
