@@ -1,6 +1,7 @@
 package net.gasdev.nomanscraft.block.entity;
 
 import net.gasdev.nomanscraft.NoMansCraft;
+import net.gasdev.nomanscraft.block.custom.AdvancedWorkbench;
 import net.gasdev.nomanscraft.item.ModItems;
 import net.gasdev.nomanscraft.item.custom.Blueprint;
 import net.gasdev.nomanscraft.recipes.BlueprintRecipe;
@@ -118,6 +119,7 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
         if (world.isClient()) return;
 
         Optional<BlueprintRecipe> recipe = hasRecipe(blockEntity);
+        int runningAnimationFrame = state.get(AdvancedWorkbench.RUNNING_ANIMATION);
         if (recipe.isPresent()) {
             blockEntity.progress++;
             blockEntity.maxProgress = recipe.get().getCraftingTime();
@@ -125,9 +127,17 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
             if(blockEntity.progress >= blockEntity.maxProgress) {
                 craftItem(blockEntity, recipe.get());
             }
+            // Block animation
+            if (runningAnimationFrame < AdvancedWorkbench.RUNNING_ANIMATION_MAX) {
+                world.setBlockState(pos, state.with(AdvancedWorkbench.RUNNING_ANIMATION, runningAnimationFrame + 1));
+            }
         } else {
             blockEntity.progress = 0;
             markDirty(world, pos, state);
+            // Block animation
+            if (runningAnimationFrame > 0) {
+                world.setBlockState(pos, state.with(AdvancedWorkbench.RUNNING_ANIMATION, runningAnimationFrame - 1));
+            }
         }
     }
 

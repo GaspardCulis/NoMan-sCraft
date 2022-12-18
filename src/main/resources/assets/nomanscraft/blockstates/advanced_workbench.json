@@ -1,8 +1,32 @@
 {
   "variants": {
-    "facing=north": {"model":  "nomanscraft:block/advanced_workbench" },
-    "facing=south": {"model":  "nomanscraft:block/advanced_workbench",  "y":  180 },
-    "facing=east": {"model":  "nomanscraft:block/advanced_workbench",  "y":  90 },
-    "facing=west": {"model":  "nomanscraft:block/advanced_workbench",  "y":  270 }
+    "frame=0,facing=north": {"model":  "nomanscraft:block/advanced_workbench_0" },
+    "frame=0,facing=south": {"model":  "nomanscraft:block/advanced_workbench_0",  "y":  180 },
+    "frame=0,facing=east": {"model":  "nomanscraft:block/advanced_workbench_0",  "y":  90 },
+    "frame=0,facing=west": {"model":  "nomanscraft:block/advanced_workbench_0",  "y":  270 },
+    "frame=1,facing=north": {"model":  "nomanscraft:block/advanced_workbench_1" },
+    "frame=1,facing=south": {"model":  "nomanscraft:block/advanced_workbench_1",  "y":  180 },
+    "frame=1,facing=east": {"model":  "nomanscraft:block/advanced_workbench_1",  "y":  90 },
+    "frame=1,facing=west": {"model":  "nomanscraft:block/advanced_workbench_1",  "y":  270 },
+    "frame=2,facing=north": {"model":  "nomanscraft:block/advanced_workbench_2" },
+    "frame=2,facing=south": {"model":  "nomanscraft:block/advanced_workbench_2",  "y":  180 },
+    "frame=2,facing=east": {"model":  "nomanscraft:block/advanced_workbench_2",  "y":  90 },
+    "frame=2,facing=west": {"model":  "nomanscraft:block/advanced_workbench_2",  "y":  270 },
+    "frame=3,facing=north": {"model":  "nomanscraft:block/advanced_workbench_3" },
+    "frame=3,facing=south": {"model":  "nomanscraft:block/advanced_workbench_3",  "y":  180 },
+    "frame=3,facing=east": {"model":  "nomanscraft:block/advanced_workbench_3",  "y":  90 },
+    "frame=3,facing=west": {"model":  "nomanscraft:block/advanced_workbench_3",  "y":  270 },
+    "frame=4,facing=north": {"model":  "nomanscraft:block/advanced_workbench_4" },
+    "frame=4,facing=south": {"model":  "nomanscraft:block/advanced_workbench_4",  "y":  180 },
+    "frame=4,facing=east": {"model":  "nomanscraft:block/advanced_workbench_4",  "y":  90 },
+    "frame=4,facing=west": {"model":  "nomanscraft:block/advanced_workbench_4",  "y":  270 },
+    "frame=5,facing=north": {"model":  "nomanscraft:block/advanced_workbench_5" },
+    "frame=5,facing=south": {"model":  "nomanscraft:block/advanced_workbench_5",  "y":  180 },
+    "frame=5,facing=east": {"model":  "nomanscraft:block/advanced_workbench_5",  "y":  90 },
+    "frame=5,facing=west": {"model":  "nomanscraft:block/advanced_workbench_5",  "y":  270 },
+    "frame=6,facing=north": {"model":  "nomanscraft:block/advanced_workbench_6" },
+    "frame=6,facing=south": {"model":  "nomanscraft:block/advanced_workbench_6",  "y":  180 },
+    "frame=6,facing=east": {"model":  "nomanscraft:block/advanced_workbench_6",  "y":  90 },
+    "frame=6,facing=west": {"model":  "nomanscraft:block/advanced_workbench_6",  "y":  270 }
   }
 }

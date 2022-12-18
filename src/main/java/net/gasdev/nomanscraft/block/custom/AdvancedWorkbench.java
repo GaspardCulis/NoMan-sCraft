@@ -11,8 +11,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
@@ -22,6 +24,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class AdvancedWorkbench extends BlockWithEntity implements BlockEntityProvider {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+    public static final int RUNNING_ANIMATION_MAX = 6;
+    public static final IntProperty RUNNING_ANIMATION = IntProperty.of("frame", 0, RUNNING_ANIMATION_MAX);
     public AdvancedWorkbench(Settings settings) {
         super(settings);
     }
@@ -44,7 +48,7 @@ public class AdvancedWorkbench extends BlockWithEntity implements BlockEntityPro
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, RUNNING_ANIMATION);
     }
 
     /* Block Entity */

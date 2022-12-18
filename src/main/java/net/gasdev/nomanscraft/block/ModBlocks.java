@@ -31,6 +31,7 @@ public class ModBlocks {
             new AdvancedWorkbench(FabricBlockSettings.of(Material.WOOD)
                     .strength(2f)
                     .sounds(BlockSoundGroup.NETHERITE)
+                    .luminance((state) -> state.get(AdvancedWorkbench.RUNNING_ANIMATION) * 10 / AdvancedWorkbench.RUNNING_ANIMATION_MAX)
             ), ModItemGroup.NO_MANS_CRAFT);
 
     private static Item registerBlockItem(String name, Block block, ItemGroup group) {
