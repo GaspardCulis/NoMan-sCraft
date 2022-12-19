@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.gasdev.nomanscraft.NoMansCraft;
 import net.gasdev.nomanscraft.item.custom.Blueprint;
+import net.gasdev.nomanscraft.item.custom.Tank;
 import net.gasdev.nomanscraft.recipes.BlueprintRecipe;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,6 +25,9 @@ public class ModItems {
 
     public static final Item ARC_REACTOR = registerItem("arc_reactor",
             new Item(new FabricItemSettings().maxCount(16)));
+
+    public static final Item TANK = registerItem("tank",
+            new Tank(new FabricItemSettings().maxCount(1)));
 
     public static final Item BLUEPRINT = registerItem("blueprint",
             new Blueprint(new FabricItemSettings()));

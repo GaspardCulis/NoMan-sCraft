@@ -51,7 +51,9 @@ public class AdvancedWorkbench extends BlockWithEntity implements BlockEntityPro
         builder.add(FACING, RUNNING_ANIMATION);
     }
 
-    /* Block Entity */
+    /* -------------------------------
+               Block Entity
+    ---------------------------------- */
 
     @Override
     public BlockRenderType getRenderType(BlockState state) {
