@@ -3,11 +3,15 @@
   "item.nomanscraft.cpu": "CPU",
   "item.nomanscraft.arc_reactor": "Arc reactor",
   "item.nomanscraft.steel_plate": "Steel plate",
+    "item.nomanscraft.tank": "Tank",
   "item.nomanscraft.blueprint": "Blueprint",
 
   "blueprint.nomanscraft.empty": "Empty blueprint",
   "blueprint.nomanscraft.blueprint_of": "Blueprint of ",
-    "blueprint.nomanscraft.invalid": "Invalid blueprint",
+  "blueprint.nomanscraft.invalid": "Invalid blueprint",
+
+  "tank.nomanscraft.empty": "Empty",
+    "tank.nomanscraft.capacity": "Capacity: ",
 
   "block.nomanscraft.cheese_block": "Cheese block",
   "block.nomanscraft.advanced_workbench": "Advanced workbench",
