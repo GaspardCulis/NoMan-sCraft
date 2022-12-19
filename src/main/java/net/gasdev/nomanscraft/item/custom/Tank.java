@@ -43,15 +43,31 @@ public class Tank extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        tooltip.add(Text.literal("Capacity: " + ((int) getCapacity(stack)) + "%").formatted(Formatting.GREEN));
+        tooltip.add(Text.of(""));
+        float capacity = getCapacity(stack);
+
+        Formatting color;
+        if (capacity > 70f) {
+            color = Formatting.GREEN;
+        } else if (capacity > 20f) {
+            color = Formatting.YELLOW;
+        } else if (capacity > 0f) {
+            color = Formatting.RED;
+        } else {
+            color = Formatting.DARK_GRAY;
+            tooltip.add(Text.translatable("tank.nomanscraft.empty").formatted(color));
+            return;
+        }
+        tooltip.add(Text.translatable("tank.nomanscraft.capacity").formatted(Formatting.GRAY).append(Text.literal(((int)getCapacity(stack)) + "%").formatted(color)));
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient() && hand == Hand.MAIN_HAND) {
-            setCapacity(user.getStackInHand(hand), getCapacity(user.getStackInHand(hand)) + 10f);
-            user.sendMessage(Text.of("Capacity: " + ((int) getCapacity(user.getStackInHand(hand))) + "%"), false);
+            float capacity = getCapacity(user.getStackInHand(hand));
+            if (capacity < 100f) {
+                setCapacity(user.getStackInHand(hand), Math.min(capacity + 10f, 100f));
+            }
         }
         return super.use(world, user, hand);
     }
