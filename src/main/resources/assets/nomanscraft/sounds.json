@@ -3,7 +3,8 @@
     "category": "blocks",
     "subtitle": "nomanscraft.tank_refill",
     "sounds": [
-      "nomanscraft:tank_refill"
+      "nomanscraft:tank_refill_0",
+      "nomanscraft:tank_refill_1"
     ]
   }
 }
