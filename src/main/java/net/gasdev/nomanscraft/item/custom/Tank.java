@@ -1,11 +1,13 @@
 package net.gasdev.nomanscraft.item.custom;
 
 import net.gasdev.nomanscraft.NoMansCraft;
+import net.gasdev.nomanscraft.sounds.ModSounds;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -64,9 +66,18 @@ public class Tank extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient() && hand == Hand.MAIN_HAND) {
+            NoMansCraft.LOGGER.info(world.asString());
             float capacity = getCapacity(user.getStackInHand(hand));
             if (capacity < 100f) {
                 setCapacity(user.getStackInHand(hand), Math.min(capacity + 10f, 100f));
+                world.playSound(
+                        null,
+                        user.getBlockPos(),
+                        ModSounds.TANK_REFILL,
+                        SoundCategory.PLAYERS,
+                        1f,
+                        1f
+                );
             }
         }
         return super.use(world, user, hand);

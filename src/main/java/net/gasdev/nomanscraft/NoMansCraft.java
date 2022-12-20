@@ -6,6 +6,7 @@ import net.gasdev.nomanscraft.block.entity.ModBlockEntities;
 import net.gasdev.nomanscraft.item.ModItems;
 import net.gasdev.nomanscraft.recipes.ModRecipes;
 import net.gasdev.nomanscraft.screen.ModScreenHandlers;
+import net.gasdev.nomanscraft.sounds.ModSounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,7 @@ public class NoMansCraft implements ModInitializer {
 		ModScreenHandlers.registerScreenHandlers();
 
 		ModRecipes.registerRecipes();
+		ModSounds.registerSoundEvents();
 
 		LOGGER.info("No Man's Craft loaded !");
 	}
