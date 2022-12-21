@@ -2,11 +2,13 @@ package net.gasdev.nomanscraft.screen;
 
 import net.gasdev.nomanscraft.block.entity.AdvancedWorkbenchBlockEntity;
 import net.gasdev.nomanscraft.item.ModItems;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -15,19 +17,22 @@ import net.minecraft.screen.slot.Slot;
 public class AdvancedWorkbenchScreenHandler extends ScreenHandler {
     private final Inventory inventory;
     private final PropertyDelegate propertyDelegate;
+    public final AdvancedWorkbenchBlockEntity blockEntity;
 
-    public AdvancedWorkbenchScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(AdvancedWorkbenchBlockEntity.INVENTORY_SIZE), new ArrayPropertyDelegate(2));
+    public AdvancedWorkbenchScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
+        this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()), new ArrayPropertyDelegate(2));
     }
 
-    public AdvancedWorkbenchScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
+    public AdvancedWorkbenchScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate propertyDelegate) {
         super(ModScreenHandlers.ADVANCED_WORKBENCH_SCREEN_HANDLER, syncId);
-        checkSize(inventory, AdvancedWorkbenchBlockEntity.INVENTORY_SIZE);
-        this.inventory = inventory;
+        checkSize(((Inventory) blockEntity), AdvancedWorkbenchBlockEntity.INVENTORY_SIZE);
+        this.inventory = ((Inventory) blockEntity);
         inventory.onOpen(playerInventory.player);
 
         checkDataCount(propertyDelegate, 2);
         this.propertyDelegate = propertyDelegate;
+
+        this.blockEntity = (AdvancedWorkbenchBlockEntity) blockEntity;
 
         initSlots(inventory);
 
@@ -85,13 +90,13 @@ public class AdvancedWorkbenchScreenHandler extends ScreenHandler {
         // Ingredient slots
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 4; j++) {
-                this.addSlot(new Slot(inventory, j + i * 4, 12 + j * 18, 26 + i * 18));
+                this.addSlot(new Slot(inventory, j + i * 4, 8 + j * 18, 26 + i * 18));
             }
         }
         // Blueprint slot
-        this.addSlot(new BlueprintSlot(inventory, 8, 95, 58));
+        this.addSlot(new BlueprintSlot(inventory, 8, 91, 58));
         // Result slot
-        this.addSlot(new ResultSlot(inventory, 9, 136, 35));
+        this.addSlot(new ResultSlot(inventory, 9, 128, 35));
     }
 
     private void addPlayerInventory(PlayerInventory playerInventory) {

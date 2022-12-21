@@ -2,25 +2,19 @@ package net.gasdev.nomanscraft.recipes;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import it.unimi.dsi.fastutil.ints.IntList;
-import net.gasdev.nomanscraft.NoMansCraft;
 import net.gasdev.nomanscraft.block.entity.AdvancedWorkbenchBlockEntity;
 import net.gasdev.nomanscraft.item.ModItems;
 import net.gasdev.nomanscraft.item.custom.Blueprint;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
-import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.logging.Logger;
 
 public class BlueprintRecipe implements Recipe<SimpleInventory> {
     public static final int DEFAULT_CRAFTING_TIME = 60;

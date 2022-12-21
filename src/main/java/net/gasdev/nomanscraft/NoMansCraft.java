@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.gasdev.nomanscraft.block.ModBlocks;
 import net.gasdev.nomanscraft.block.entity.ModBlockEntities;
 import net.gasdev.nomanscraft.item.ModItems;
+import net.gasdev.nomanscraft.networking.ModMessages;
 import net.gasdev.nomanscraft.recipes.ModRecipes;
 import net.gasdev.nomanscraft.screen.ModScreenHandlers;
 import net.gasdev.nomanscraft.sounds.ModSounds;
@@ -27,6 +28,9 @@ public class NoMansCraft implements ModInitializer {
 
 		ModRecipes.registerRecipes();
 		ModSounds.registerSoundEvents();
+
+		ModMessages.registerC2SPackets();
+		ModMessages.registerS2CPackets();
 
 		LOGGER.info("No Man's Craft loaded !");
 	}

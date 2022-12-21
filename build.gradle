@@ -39,8 +39,9 @@ dependencies {
 		exclude(group: "net.fabricmc.fabric-api")
 	}
 
-	modImplementation("curse.maven:reborncore-237903:4142164")
+	modImplementation ("curse.maven:reborncore-237903:4142164")
 	modImplementation ("curse.maven:techreborn-233564:4142163")
+
 }
 
 processResources {

@@ -2,6 +2,7 @@ package net.gasdev.nomanscraft.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.gasdev.nomanscraft.NoMansCraft;
+import net.gasdev.nomanscraft.screen.renderer.EnergyInfoArea;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -14,6 +15,7 @@ import net.minecraft.util.Identifier;
 public class AdvancedWorkbenchScreen extends HandledScreen<AdvancedWorkbenchScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier("nomanscraft", "textures/gui/advanced_workbench.png");
+    private EnergyInfoArea energyInfoArea;
 
     public AdvancedWorkbenchScreen(AdvancedWorkbenchScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -23,6 +25,9 @@ public class AdvancedWorkbenchScreen extends HandledScreen<AdvancedWorkbenchScre
     protected void init() {
         super.init();
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
+
+        energyInfoArea = new EnergyInfoArea(((width - backgroundWidth) / 2 + 161),
+                ((height - backgroundHeight) / 2 + 16), handler.blockEntity.energyStorage, 8, 54);
     }
 
     @Override
@@ -37,6 +42,21 @@ public class AdvancedWorkbenchScreen extends HandledScreen<AdvancedWorkbenchScre
         if (handler.isCrafting()) {
             renderProgressBar(matrices, x, y);
         }
+        energyInfoArea.draw(matrices);
+    }
+
+    @Override
+    protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
+        int x = (width - backgroundWidth) / 2;
+        int y = (height - backgroundHeight) / 2;
+
+        renderEnergyAreaTooltip(matrices, mouseX, mouseY, x, y);
+    }
+
+    private void renderEnergyAreaTooltip(MatrixStack matrices, int mouseX, int mouseY, int x, int y) {
+        if (energyInfoArea.getArea().contains(mouseX, mouseY)) {
+            renderTooltip(matrices, energyInfoArea.getTooltips(), mouseX - x, mouseY - y);
+        }
     }
 
     @Override
@@ -48,7 +68,7 @@ public class AdvancedWorkbenchScreen extends HandledScreen<AdvancedWorkbenchScre
     private void renderProgressBar(MatrixStack matrices, int x, int y) {
         float progress = handler.getProgressRatio();
         int width = (int) (progress * 33);
-        drawTexture(matrices, x+89, y+35, 176, 0, width, 16);
+        drawTexture(matrices, x+85, y+35, 176, 0, width, 16);
     }
 
     @Override

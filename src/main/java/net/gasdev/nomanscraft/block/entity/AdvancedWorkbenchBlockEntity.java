@@ -1,9 +1,15 @@
 package net.gasdev.nomanscraft.block.entity;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.gasdev.nomanscraft.NoMansCraft;
 import net.gasdev.nomanscraft.block.custom.AdvancedWorkbench;
 import net.gasdev.nomanscraft.item.ModItems;
 import net.gasdev.nomanscraft.item.custom.Blueprint;
+import net.gasdev.nomanscraft.networking.ModMessages;
 import net.gasdev.nomanscraft.recipes.BlueprintRecipe;
 import net.gasdev.nomanscraft.screen.AdvancedWorkbenchScreenHandler;
 import net.minecraft.block.BlockState;
@@ -15,22 +21,26 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeInputProvider;
 import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.Optional;
 
-public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory, RecipeInputProvider {
+public class AdvancedWorkbenchBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory, RecipeInputProvider {
     public static final int INVENTORY_SIZE = 10;
     public static final int CRAFTING_INPUT_START = 0;
     public static final int CRAFTING_INPUT_END = 8;
@@ -38,6 +48,23 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
     public static final int CRAFTING_BLUEPRINT_SLOT = 8;
     public static final int CRAFTING_RESULT_SLOT = 9;
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
+
+    public final long MAX_ENERGY = 30000;
+    public final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(MAX_ENERGY, 32, 32) {
+        @Override
+        protected void onFinalCommit() {
+            markDirty();
+            if (!world.isClient()) {
+                PacketByteBuf data = PacketByteBufs.create();
+                data.writeLong(amount);
+                data.writeBlockPos(pos);
+
+                for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, getPos())) {
+                    ServerPlayNetworking.send(player, ModMessages.ENERGY_SYNC_S2C_ID, data);
+                }
+            }
+        }
+    };
 
     protected final PropertyDelegate propertyDelegate;
     private int progress = 0;
@@ -68,6 +95,10 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
                 return 2;
             }
         };
+    }
+
+    public void setEnergyLevel(long energy) {
+        energyStorage.amount = energy;
     }
 
     @Override
@@ -106,6 +137,7 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
         super.writeNbt(nbt);
         Inventories.writeNbt(nbt, inventory);
         nbt.putInt("advanced_workbench.progress", progress);
+        nbt.putLong("advanced_workbench.energy",energyStorage.amount);
     }
 
     @Override
@@ -113,6 +145,21 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
         super.readNbt(nbt);
         Inventories.readNbt(nbt, inventory);
         progress = nbt.getInt("advanced_workbench.progress");
+        energyStorage.amount = nbt.getLong("advanced_workbench.energy");
+    }
+
+    public void addEnergy(long amount) {
+        try(Transaction transaction = Transaction.openOuter()) {
+            energyStorage.insert(amount, transaction);
+            transaction.commit();
+        }
+    }
+
+    public void extractEnergy(long amount) {
+        try(Transaction transaction = Transaction.openOuter()) {
+            energyStorage.extract(amount, transaction);
+            transaction.commit();
+        }
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, AdvancedWorkbenchBlockEntity blockEntity) {
@@ -120,9 +167,10 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
 
         Optional<BlueprintRecipe> recipe = hasRecipe(blockEntity);
         int runningAnimationFrame = state.get(AdvancedWorkbench.RUNNING_ANIMATION);
-        if (recipe.isPresent()) {
+        if (recipe.isPresent() && blockEntity.energyStorage.amount >= 32) {
             blockEntity.progress++;
             blockEntity.maxProgress = recipe.get().getCraftingTime();
+            blockEntity.extractEnergy(32);
             markDirty(world, pos, state);
             if(blockEntity.progress >= blockEntity.maxProgress) {
                 craftItem(blockEntity, recipe.get());
@@ -188,5 +236,10 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements NamedSc
         for (int i = 0; i < 9; i++) {
             finder.addInput(this.inventory.get(i));
         }
+    }
+
+    @Override
+    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+        buf.writeBlockPos(this.pos);
     }
 }
