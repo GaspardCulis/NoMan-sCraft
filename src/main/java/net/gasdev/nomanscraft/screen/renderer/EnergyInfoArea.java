@@ -42,7 +42,7 @@ public class EnergyInfoArea extends InfoArea {
                 transform,
                 area.getX(), area.getY()+(height-stored),
                 area.getX() + area.getWidth(), area.getY() +area.getHeight(),
-                0xffb51500, 0xff600b00
+                0xffe5e500, 0xffa0a000
         );
     }
 }
