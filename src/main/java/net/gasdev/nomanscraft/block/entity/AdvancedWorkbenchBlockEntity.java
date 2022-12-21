@@ -50,7 +50,7 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements Extende
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
 
     public final long MAX_ENERGY = 30000;
-    public final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(MAX_ENERGY, 32, 32) {
+    public final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(MAX_ENERGY, 128, 32) {
         @Override
         protected void onFinalCommit() {
             markDirty();
@@ -167,17 +167,19 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements Extende
 
         Optional<BlueprintRecipe> recipe = hasRecipe(blockEntity);
         int runningAnimationFrame = state.get(AdvancedWorkbench.RUNNING_ANIMATION);
-        if (recipe.isPresent() && blockEntity.energyStorage.amount >= 32) {
-            blockEntity.progress++;
-            blockEntity.maxProgress = recipe.get().getCraftingTime();
-            blockEntity.extractEnergy(32);
-            markDirty(world, pos, state);
-            if(blockEntity.progress >= blockEntity.maxProgress) {
-                craftItem(blockEntity, recipe.get());
-            }
-            // Block animation
-            if (runningAnimationFrame < AdvancedWorkbench.RUNNING_ANIMATION_MAX) {
-                world.setBlockState(pos, state.with(AdvancedWorkbench.RUNNING_ANIMATION, runningAnimationFrame + 1));
+        if (recipe.isPresent()) {
+            if (blockEntity.energyStorage.amount >= 32) {
+                blockEntity.progress++;
+                blockEntity.maxProgress = recipe.get().getCraftingTime();
+                blockEntity.extractEnergy(32);
+                markDirty(world, pos, state);
+                if (blockEntity.progress >= blockEntity.maxProgress) {
+                    craftItem(blockEntity, recipe.get());
+                }
+                // Block animation
+                if (runningAnimationFrame < AdvancedWorkbench.RUNNING_ANIMATION_MAX) {
+                    world.setBlockState(pos, state.with(AdvancedWorkbench.RUNNING_ANIMATION, runningAnimationFrame + 1));
+                }
             }
         } else {
             blockEntity.progress = 0;
