@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class BlueprintRecipe implements Recipe<SimpleInventory> {
     public static final int DEFAULT_CRAFTING_TIME = 60;
-    public static final int DEFAULT_ENERGY_COST = 16;
+    public static final int DEFAULT_ENERGY_COST = 32;
     private final Identifier id;
     private final DefaultedList<Ingredient> ingredients;
     private final ItemStack output;

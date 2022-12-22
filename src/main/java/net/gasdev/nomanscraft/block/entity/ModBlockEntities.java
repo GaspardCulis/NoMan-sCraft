@@ -26,5 +26,6 @@ public class ModBlockEntities {
                         ModBlocks.COMPRESSOR).build(null));
 
         EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyStorage, ADVANCED_WORKBENCH);
+        EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyStorage, COMPRESSOR);
     }
 }
