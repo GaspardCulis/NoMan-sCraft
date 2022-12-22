@@ -59,12 +59,6 @@ public class AdvancedWorkbenchScreen extends HandledScreen<AdvancedWorkbenchScre
         }
     }
 
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        NoMansCraft.LOGGER.info("Mouse clicked at " + mouseX + ", " + mouseY);
-        return super.mouseClicked(mouseX, mouseY, button);
-    }
-
     private void renderProgressBar(MatrixStack matrices, int x, int y) {
         float progress = handler.getProgressRatio();
         int width = (int) (progress * 33);
