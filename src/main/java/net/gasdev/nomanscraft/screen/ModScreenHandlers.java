@@ -11,7 +11,11 @@ public class ModScreenHandlers {
     public static ScreenHandlerType<AdvancedWorkbenchScreenHandler> ADVANCED_WORKBENCH_SCREEN_HANDLER =
             new ExtendedScreenHandlerType<>(AdvancedWorkbenchScreenHandler::new);
 
+    public static ScreenHandlerType<CompressorScreenHandler> COMPRESSOR_SCREEN_HANDLER =
+            new ExtendedScreenHandlerType<>(CompressorScreenHandler::new);
+
     public static void registerScreenHandlers() {
         Registry.register(Registries.SCREEN_HANDLER, new Identifier(NoMansCraft.MOD_ID, "advanced_workbench"), ADVANCED_WORKBENCH_SCREEN_HANDLER);
+        Registry.register(Registries.SCREEN_HANDLER, new Identifier(NoMansCraft.MOD_ID, "compressor"), COMPRESSOR_SCREEN_HANDLER);
     }
 }

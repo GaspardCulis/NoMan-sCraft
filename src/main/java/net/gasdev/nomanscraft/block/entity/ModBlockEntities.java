@@ -12,11 +12,18 @@ import team.reborn.energy.api.EnergyStorage;
 public class ModBlockEntities {
     public static BlockEntityType<AdvancedWorkbenchBlockEntity> ADVANCED_WORKBENCH;
 
+    public static BlockEntityType<CompressorBlockEntity> COMPRESSOR;
+
     public static void registerBlockEntities() {
         ADVANCED_WORKBENCH = Registry.register(Registries.BLOCK_ENTITY_TYPE,
                 new Identifier(NoMansCraft.MOD_ID, "advanced_workbench"),
                 FabricBlockEntityTypeBuilder.create(AdvancedWorkbenchBlockEntity::new,
                         ModBlocks.ADVANCED_WORKBENCH).build(null));
+
+        COMPRESSOR = Registry.register(Registries.BLOCK_ENTITY_TYPE,
+                new Identifier(NoMansCraft.MOD_ID, "compressor"),
+                FabricBlockEntityTypeBuilder.create(CompressorBlockEntity::new,
+                        ModBlocks.COMPRESSOR).build(null));
 
         EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyStorage, ADVANCED_WORKBENCH);
     }

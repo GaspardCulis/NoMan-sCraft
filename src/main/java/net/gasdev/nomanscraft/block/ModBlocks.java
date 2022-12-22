@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.gasdev.nomanscraft.NoMansCraft;
 import net.gasdev.nomanscraft.block.custom.AdvancedWorkbench;
+import net.gasdev.nomanscraft.block.custom.Compressor;
 import net.gasdev.nomanscraft.item.ModItemGroup;
 import net.gasdev.nomanscraft.item.ModItems;
 import net.minecraft.block.Block;
@@ -32,6 +33,12 @@ public class ModBlocks {
                     .strength(2f)
                     .sounds(BlockSoundGroup.NETHERITE)
                     .luminance((state) -> state.get(AdvancedWorkbench.RUNNING_ANIMATION) * 10 / AdvancedWorkbench.RUNNING_ANIMATION_MAX)
+            ), ModItemGroup.NO_MANS_CRAFT);
+
+    public static final Block COMPRESSOR = registerBlock("compressor",
+            new Compressor(FabricBlockSettings.of(Material.METAL)
+                    .strength(3f)
+                    .sounds(BlockSoundGroup.NETHERITE)
             ), ModItemGroup.NO_MANS_CRAFT);
 
     private static Item registerBlockItem(String name, Block block, ItemGroup group) {
