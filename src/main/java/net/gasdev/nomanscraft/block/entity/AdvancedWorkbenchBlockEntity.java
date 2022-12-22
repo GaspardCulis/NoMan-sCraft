@@ -167,22 +167,26 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements Extende
 
         Optional<BlueprintRecipe> recipe = hasRecipe(blockEntity);
         int runningAnimationFrame = state.get(AdvancedWorkbench.RUNNING_ANIMATION);
-        if (recipe.isPresent()) {
-            if (blockEntity.energyStorage.amount >= 32) {
-                blockEntity.progress++;
-                blockEntity.maxProgress = recipe.get().getCraftingTime();
-                blockEntity.extractEnergy(32);
-                markDirty(world, pos, state);
-                if (blockEntity.progress >= blockEntity.maxProgress) {
-                    craftItem(blockEntity, recipe.get());
-                }
-                // Block animation
-                if (runningAnimationFrame < AdvancedWorkbench.RUNNING_ANIMATION_MAX) {
-                    world.setBlockState(pos, state.with(AdvancedWorkbench.RUNNING_ANIMATION, runningAnimationFrame + 1));
-                }
+        if (recipe.isPresent() && blockEntity.energyStorage.amount >= recipe.get().getEnergyCost()) {
+            blockEntity.progress++;
+            blockEntity.maxProgress = recipe.get().getCraftingTime();
+            blockEntity.extractEnergy(recipe.get().getEnergyCost());
+            markDirty(world, pos, state);
+            if (blockEntity.progress >= blockEntity.maxProgress) {
+                craftItem(blockEntity, recipe.get());
+            }
+            // Block animation
+            if (runningAnimationFrame < AdvancedWorkbench.RUNNING_ANIMATION_MAX &&
+                    blockEntity.energyStorage.amount >= recipe.get().getEnergyCost() * 2) { // Prevent flickering
+                world.setBlockState(pos, state.with(AdvancedWorkbench.RUNNING_ANIMATION, runningAnimationFrame + 1));
             }
         } else {
-            blockEntity.progress = 0;
+            if (recipe.isPresent()) { // If not enough energy
+                blockEntity.progress -= 2;
+            } else {
+                blockEntity.progress = 0;
+            }
+
             markDirty(world, pos, state);
             // Block animation
             if (runningAnimationFrame > 0) {

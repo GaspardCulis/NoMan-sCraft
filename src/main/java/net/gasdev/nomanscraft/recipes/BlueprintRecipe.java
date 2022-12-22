@@ -18,17 +18,20 @@ import java.util.ArrayList;
 
 public class BlueprintRecipe implements Recipe<SimpleInventory> {
     public static final int DEFAULT_CRAFTING_TIME = 60;
+    public static final int DEFAULT_ENERGY_COST = 16;
     private final Identifier id;
     private final DefaultedList<Ingredient> ingredients;
     private final ItemStack output;
 
     private final int craftingTime;
+    private final int energyCost;
 
-    public BlueprintRecipe(Identifier id, DefaultedList<Ingredient> ingredients, ItemStack output, int craftingTime) {
+    public BlueprintRecipe(Identifier id, DefaultedList<Ingredient> ingredients, ItemStack output, int craftingTime, int energyCost) {
         this.id = id;
         this.ingredients = ingredients;
         this.output = output;
         this.craftingTime = craftingTime;
+        this.energyCost = energyCost;
     }
 
     @Override
@@ -89,6 +92,8 @@ public class BlueprintRecipe implements Recipe<SimpleInventory> {
 
     public int getCraftingTime() { return craftingTime; }
 
+    public int getEnergyCost() { return energyCost; }
+
     @Override
     public RecipeSerializer<?> getSerializer() {
         return BlueprintRecipeSerializer.INSTANCE;
@@ -135,12 +140,19 @@ public class BlueprintRecipe implements Recipe<SimpleInventory> {
                 craftingTime = DEFAULT_CRAFTING_TIME;
             }
 
+            int energyCost;
+            if (JsonHelper.hasNumber(json, "energyCost")) {
+                energyCost = JsonHelper.getInt(json, "energyCost");
+            } else {
+                energyCost = DEFAULT_ENERGY_COST;
+            }
+
             DefaultedList<Ingredient> ingredientsList = DefaultedList.ofSize(inputs.size(), Ingredient.EMPTY);
             for (int i = 0; i < inputs.size(); i++) {
                 ingredientsList.set(i, inputs.get(i));
             }
 
-            return new BlueprintRecipe(id, ingredientsList, output, craftingTime);
+            return new BlueprintRecipe(id, ingredientsList, output, craftingTime, energyCost);
         }
 
         @Override
@@ -155,7 +167,9 @@ public class BlueprintRecipe implements Recipe<SimpleInventory> {
 
             int craftingTime = buf.readInt();
 
-            return new BlueprintRecipe(id, inputs, output, craftingTime);
+            int energyCost = buf.readInt();
+
+            return new BlueprintRecipe(id, inputs, output, craftingTime, energyCost);
         }
 
         @Override
@@ -168,6 +182,7 @@ public class BlueprintRecipe implements Recipe<SimpleInventory> {
 
             buf.writeItemStack(recipe.getOutput());
             buf.writeInt(recipe.getCraftingTime());
+            buf.writeInt(recipe.getEnergyCost());
         }
     }
 }
