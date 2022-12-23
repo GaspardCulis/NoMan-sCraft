@@ -148,7 +148,7 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements Extende
         energyStorage.amount = nbt.getLong("advanced_workbench.energy");
     }
 
-    public void addEnergy(long amount) {
+    public void insertEnergy(long amount) {
         try(Transaction transaction = Transaction.openOuter()) {
             energyStorage.insert(amount, transaction);
             transaction.commit();

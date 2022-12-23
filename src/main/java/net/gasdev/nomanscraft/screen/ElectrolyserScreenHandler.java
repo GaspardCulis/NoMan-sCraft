@@ -71,8 +71,9 @@ public class ElectrolyserScreenHandler extends ScreenHandler {
     }
 
     private void initSlots(Inventory inventory) {
-        this.addSlot(new Slot(inventory, 0, 52, 31));
+        this.addSlot(new Slot(inventory, 0, 32, 11));
         this.addSlot(new Slot(inventory, 1, 106, 11));
+        this.addSlot(new Slot(inventory, 1, 122, 34));
     }
 
     private void addPlayerInventory(PlayerInventory playerInventory) {
