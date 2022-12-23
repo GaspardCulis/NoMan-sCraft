@@ -72,7 +72,8 @@ public class CompressorScreenHandler extends ScreenHandler {
     }
 
     private void initSlots(Inventory inventory) {
-        this.addSlot(new Slot(inventory, 0, 15, 15));
+        this.addSlot(new Slot(inventory, 0, 52, 31));
+        this.addSlot(new Slot(inventory, 1, 106, 11));
     }
 
     private void addPlayerInventory(PlayerInventory playerInventory) {
