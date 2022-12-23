@@ -1,7 +1,6 @@
 package net.gasdev.nomanscraft.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.gasdev.nomanscraft.NoMansCraft;
 import net.gasdev.nomanscraft.screen.renderer.EnergyInfoArea;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
@@ -10,12 +9,12 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class CompressorScreen extends HandledScreen<CompressorScreenHandler> {
+public class ElectrolyserScreen extends HandledScreen<ElectrolyserScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier("nomanscraft", "textures/gui/compressor.png");
+    private static final Identifier TEXTURE = new Identifier("nomanscraft", "textures/gui/electrolyser.png");
     private EnergyInfoArea energyInfoArea;
 
-    public CompressorScreen(CompressorScreenHandler handler, PlayerInventory inventory, Text title) {
+    public ElectrolyserScreen(ElectrolyserScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
     }
 

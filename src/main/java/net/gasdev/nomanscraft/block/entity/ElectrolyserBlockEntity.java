@@ -4,10 +4,8 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.gasdev.nomanscraft.item.ModItems;
 import net.gasdev.nomanscraft.networking.ModMessages;
-import net.gasdev.nomanscraft.screen.AdvancedWorkbenchScreenHandler;
-import net.gasdev.nomanscraft.screen.CompressorScreenHandler;
+import net.gasdev.nomanscraft.screen.ElectrolyserScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,7 +14,6 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.RecipeInputProvider;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -29,7 +26,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class CompressorBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
+public class ElectrolyserBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
     public static final int INVENTORY_SIZE = 2;
     protected final PropertyDelegate propertyDelegate;
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
@@ -50,8 +47,8 @@ public class CompressorBlockEntity extends BlockEntity implements ExtendedScreen
         }
     };
 
-    public CompressorBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.COMPRESSOR, pos, state);
+    public ElectrolyserBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.ELECTROLYSER, pos, state);
         this.propertyDelegate = new PropertyDelegate() {
             @Override
             public int get(int index) {
@@ -96,7 +93,7 @@ public class CompressorBlockEntity extends BlockEntity implements ExtendedScreen
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new CompressorScreenHandler(syncId, inv, this, this.propertyDelegate);
+        return new ElectrolyserScreenHandler(syncId, inv, this, this.propertyDelegate);
     }
 
     @Override

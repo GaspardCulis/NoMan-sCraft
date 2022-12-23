@@ -12,7 +12,7 @@ import team.reborn.energy.api.EnergyStorage;
 public class ModBlockEntities {
     public static BlockEntityType<AdvancedWorkbenchBlockEntity> ADVANCED_WORKBENCH;
 
-    public static BlockEntityType<CompressorBlockEntity> COMPRESSOR;
+    public static BlockEntityType<ElectrolyserBlockEntity> ELECTROLYSER;
 
     public static void registerBlockEntities() {
         ADVANCED_WORKBENCH = Registry.register(Registries.BLOCK_ENTITY_TYPE,
@@ -20,12 +20,12 @@ public class ModBlockEntities {
                 FabricBlockEntityTypeBuilder.create(AdvancedWorkbenchBlockEntity::new,
                         ModBlocks.ADVANCED_WORKBENCH).build(null));
 
-        COMPRESSOR = Registry.register(Registries.BLOCK_ENTITY_TYPE,
-                new Identifier(NoMansCraft.MOD_ID, "compressor"),
-                FabricBlockEntityTypeBuilder.create(CompressorBlockEntity::new,
-                        ModBlocks.COMPRESSOR).build(null));
+        ELECTROLYSER = Registry.register(Registries.BLOCK_ENTITY_TYPE,
+                new Identifier(NoMansCraft.MOD_ID, "electrolyser"),
+                FabricBlockEntityTypeBuilder.create(ElectrolyserBlockEntity::new,
+                        ModBlocks.ELECTROLYSER).build(null));
 
         EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyStorage, ADVANCED_WORKBENCH);
-        EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyStorage, COMPRESSOR);
+        EnergyStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.energyStorage, ELECTROLYSER);
     }
 }

@@ -2,8 +2,7 @@ package net.gasdev.nomanscraft.networking.packet;
 
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.gasdev.nomanscraft.block.entity.AdvancedWorkbenchBlockEntity;
-import net.gasdev.nomanscraft.block.entity.CompressorBlockEntity;
-import net.gasdev.nomanscraft.screen.AdvancedWorkbenchScreenHandler;
+import net.gasdev.nomanscraft.block.entity.ElectrolyserBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
@@ -22,7 +21,7 @@ public class EnergySyncS2CPacket {
                     screenHandler.blockEntity.getPos().equals(pos)) {
                 blockEntity.setEnergyLevel(energy);
             }*/
-        } else if (client.world.getBlockEntity(pos) instanceof CompressorBlockEntity blockEntity) {
+        } else if (client.world.getBlockEntity(pos) instanceof ElectrolyserBlockEntity blockEntity) {
             blockEntity.setEnergyLevel(energy);
         }
     }

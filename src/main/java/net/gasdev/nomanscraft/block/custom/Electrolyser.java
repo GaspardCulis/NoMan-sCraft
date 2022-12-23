@@ -1,6 +1,6 @@
 package net.gasdev.nomanscraft.block.custom;
 
-import net.gasdev.nomanscraft.block.entity.CompressorBlockEntity;
+import net.gasdev.nomanscraft.block.entity.ElectrolyserBlockEntity;
 import net.gasdev.nomanscraft.block.entity.ModBlockEntities;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -11,7 +11,6 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
@@ -19,11 +18,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class Compressor extends BlockWithEntity implements BlockEntityProvider {
+public class Electrolyser extends BlockWithEntity implements BlockEntityProvider {
 
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 
-    public Compressor(Settings settings) {
+    public Electrolyser(Settings settings) {
         super(settings);
     }
 
@@ -61,8 +60,8 @@ public class Compressor extends BlockWithEntity implements BlockEntityProvider {
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof CompressorBlockEntity) {
-                ItemScatterer.spawn(world, pos, (CompressorBlockEntity) blockEntity);
+            if (blockEntity instanceof ElectrolyserBlockEntity) {
+                ItemScatterer.spawn(world, pos, (ElectrolyserBlockEntity) blockEntity);
                 world.updateComparators(pos, this);
             }
             super.onStateReplaced(state, world, pos, newState, moved);
@@ -72,7 +71,7 @@ public class Compressor extends BlockWithEntity implements BlockEntityProvider {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!world.isClient) {
-            NamedScreenHandlerFactory screenHandlerFactory = ((CompressorBlockEntity) world.getBlockEntity(pos));
+            NamedScreenHandlerFactory screenHandlerFactory = ((ElectrolyserBlockEntity) world.getBlockEntity(pos));
 
             if (screenHandlerFactory != null) {
                 player.openHandledScreen(screenHandlerFactory);
@@ -85,12 +84,12 @@ public class Compressor extends BlockWithEntity implements BlockEntityProvider {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new CompressorBlockEntity(pos, state);
+        return new ElectrolyserBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ModBlockEntities.COMPRESSOR, CompressorBlockEntity::tick);
+        return checkType(type, ModBlockEntities.ELECTROLYSER, ElectrolyserBlockEntity::tick);
     }
 }

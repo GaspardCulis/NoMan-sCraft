@@ -1,7 +1,6 @@
 package net.gasdev.nomanscraft.screen;
 
-import net.gasdev.nomanscraft.block.entity.CompressorBlockEntity;
-import net.gasdev.nomanscraft.item.ModItems;
+import net.gasdev.nomanscraft.block.entity.ElectrolyserBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -13,25 +12,25 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
-public class CompressorScreenHandler extends ScreenHandler {
+public class ElectrolyserScreenHandler extends ScreenHandler {
     private final Inventory inventory;
     private final PropertyDelegate propertyDelegate;
-    public final CompressorBlockEntity blockEntity;
+    public final ElectrolyserBlockEntity blockEntity;
 
-    public CompressorScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
+    public ElectrolyserScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
         this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(buf.readBlockPos()), new ArrayPropertyDelegate(0));
     }
 
-    public CompressorScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate propertyDelegate) {
-        super(ModScreenHandlers.COMPRESSOR_SCREEN_HANDLER, syncId);
-        checkSize(((Inventory) blockEntity), CompressorBlockEntity.INVENTORY_SIZE);
+    public ElectrolyserScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate propertyDelegate) {
+        super(ModScreenHandlers.ELECTROLYSER_SCREEN_HANDLER, syncId);
+        checkSize(((Inventory) blockEntity), ElectrolyserBlockEntity.INVENTORY_SIZE);
         this.inventory = ((Inventory) blockEntity);
         inventory.onOpen(playerInventory.player);
 
         checkDataCount(propertyDelegate, 0);
         this.propertyDelegate = propertyDelegate;
 
-        this.blockEntity = (CompressorBlockEntity) blockEntity;
+        this.blockEntity = (ElectrolyserBlockEntity) blockEntity;
 
         initSlots(inventory);
 
