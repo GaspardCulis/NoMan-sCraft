@@ -2,19 +2,23 @@ package net.gasdev.nomanscraft.item.custom;
 
 import net.gasdev.nomanscraft.NoMansCraft;
 import net.gasdev.nomanscraft.sounds.ModSounds;
+import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 public class Tank extends Item {
@@ -60,13 +64,12 @@ public class Tank extends Item {
             tooltip.add(Text.translatable("tank.nomanscraft.empty").formatted(color));
             return;
         }
-        tooltip.add(Text.translatable("tank.nomanscraft.capacity").formatted(Formatting.GRAY).append(Text.literal(((int)getCapacity(stack)) + "%").formatted(color)));
+        tooltip.add(Text.translatable("tank.nomanscraft.capacity", NumberFormat.getNumberInstance().format(capacity)).formatted(color));
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient() && hand == Hand.MAIN_HAND) {
-            NoMansCraft.LOGGER.info(world.asString());
             float capacity = getCapacity(user.getStackInHand(hand));
             if (capacity < 100f) {
                 setCapacity(user.getStackInHand(hand), Math.min(capacity + 10f, 100f));
