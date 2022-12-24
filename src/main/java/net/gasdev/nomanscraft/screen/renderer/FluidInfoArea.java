@@ -46,7 +46,7 @@ public class FluidInfoArea extends InfoArea {
                 transform,
                 area.getX(), area.getY()+(height-stored),
                 area.getX() + area.getWidth(), area.getY() +area.getHeight(),
-                0xffe5e500, 0xffa0a000
+                0xff0000ff, 0xff0000a0
         );
     }
 }
