@@ -1,10 +1,18 @@
 package net.gasdev.nomanscraft.screen.renderer;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Rect2i;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
 import team.reborn.energy.api.EnergyStorage;
 
@@ -38,15 +46,44 @@ public class FluidInfoArea extends InfoArea {
         return List.of(Text.literal((fluid.getAmount()/81)+"/"+(fluid.getCapacity()/81)+" mB"));
     }
 
+    /*
+     * METHOD FROM https://github.com/TechReborn/TechReborn
+     * UNDER MIT LICENSE: https://github.com/TechReborn/TechReborn/blob/1.19/LICENSE.md
+     */
+    public void drawFluid(MatrixStack matrixStack, int x, int y, int width, int height, long maxCapacity) {
+        if (fluid.variant.getFluid() == Fluids.EMPTY) {
+            return;
+        }
+        RenderSystem.setShaderTexture(0, PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+        y += height;
+        final Sprite sprite = FluidVariantRendering.getSprite(fluid.variant);
+        int color = FluidVariantRendering.getColor(fluid.variant);
+
+        final int drawHeight = (int) (fluid.getAmount() / (maxCapacity * 1F) * height);
+        final int iconHeight = sprite.getContents().getHeight();
+        int offsetHeight = drawHeight;
+
+        RenderSystem.setShaderColor((color >> 16 & 255) / 255.0F, (float) (color >> 8 & 255) / 255.0F, (float) (color & 255) / 255.0F, 1F);
+
+        int iteration = 0;
+        while (offsetHeight != 0) {
+            final int curHeight = offsetHeight < iconHeight ? offsetHeight : iconHeight;
+
+            DrawableHelper.drawSprite(matrixStack, x, y - offsetHeight, 0, width, curHeight, sprite);
+            offsetHeight -= curHeight;
+            iteration++;
+            if (iteration > 50) {
+                break;
+            }
+        }
+        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+
+        RenderSystem.setShaderTexture(0, FluidRenderHandlerRegistry.INSTANCE.get(fluid.variant.getFluid())
+                .getFluidSprites(MinecraftClient.getInstance().world, null, fluid.variant.getFluid().getDefaultState())[0].getContents().getId());
+    }
+
     @Override
     public void draw(MatrixStack transform) {
-        final int height = area.getHeight();
-        int stored = (int)(height*(fluid.getAmount()/(float)fluid.getCapacity()));
-        fillGradient(
-                transform,
-                area.getX(), area.getY()+(height-stored),
-                area.getX() + area.getWidth(), area.getY() +area.getHeight(),
-                0xff0000ff, 0xff0000a0
-        );
+        drawFluid(transform, area.getX(), area.getY(), area.getWidth(), area.getHeight(), fluid.getCapacity());
     }
 }
