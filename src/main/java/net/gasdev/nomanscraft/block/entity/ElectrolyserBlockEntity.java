@@ -55,6 +55,18 @@ public class ElectrolyserBlockEntity extends BlockEntity implements ExtendedScre
         }
     };
 
+    private void sendEnergyPacket() {
+        if (!world.isClient()) {
+            PacketByteBuf data = PacketByteBufs.create();
+            data.writeLong(energyStorage.amount);
+            data.writeBlockPos(pos);
+
+            for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, getPos())) {
+                ServerPlayNetworking.send(player, ModMessages.ENERGY_SYNC_S2C_ID, data);
+            }
+        }
+    }
+
     public final SingleVariantStorage<FluidVariant> fluidStorage = new SingleVariantStorage<FluidVariant>() {
         @Override
         protected FluidVariant getBlankVariant() {
@@ -69,18 +81,22 @@ public class ElectrolyserBlockEntity extends BlockEntity implements ExtendedScre
         @Override
         protected void onFinalCommit() {
             markDirty();
-            if (!world.isClient()) {
-                PacketByteBuf data = PacketByteBufs.create();
-                variant.toPacket(data);
-                data.writeLong(amount);
-                data.writeBlockPos(pos);
-
-                for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, getPos())) {
-                    ServerPlayNetworking.send(player, ModMessages.FLUID_SYNC_S2C_ID, data);
-                }
-            }
+            sendFluidPacket();
         }
     };
+
+    private void sendFluidPacket() {
+        if (!world.isClient()) {
+            PacketByteBuf data = PacketByteBufs.create();
+            fluidStorage.variant.toPacket(data);
+            data.writeLong(fluidStorage.amount);
+            data.writeBlockPos(pos);
+
+            for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, getPos())) {
+                ServerPlayNetworking.send(player, ModMessages.FLUID_SYNC_S2C_ID, data);
+            }
+        }
+    }
 
     public ElectrolyserBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.ELECTROLYSER, pos, state);
@@ -158,11 +174,6 @@ public class ElectrolyserBlockEntity extends BlockEntity implements ExtendedScre
         fluidStorage.amount = fluidLevel;
     }
 
-    @Override
-    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-        buf.writeBlockPos(this.pos);
-    }
-
     public static void insertFluid(ElectrolyserBlockEntity blockEntity, Fluid fluid, long amount) {
         try (Transaction transaction = Transaction.openOuter()) {
             blockEntity.fluidStorage.insert(FluidVariant.of(fluid), amount, transaction);
@@ -186,5 +197,12 @@ public class ElectrolyserBlockEntity extends BlockEntity implements ExtendedScre
             blockEntity.setStack(0, new ItemStack(Items.BUCKET));
             insertFluid(blockEntity, Fluids.WATER, FluidConstants.BUCKET);
         }
+    }
+
+    @Override
+    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+        buf.writeBlockPos(this.pos);
+        sendEnergyPacket();
+        sendFluidPacket();
     }
 }

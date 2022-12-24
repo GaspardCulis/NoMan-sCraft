@@ -54,17 +54,21 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements Extende
         @Override
         protected void onFinalCommit() {
             markDirty();
-            if (!world.isClient()) {
-                PacketByteBuf data = PacketByteBufs.create();
-                data.writeLong(amount);
-                data.writeBlockPos(pos);
-
-                for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, getPos())) {
-                    ServerPlayNetworking.send(player, ModMessages.ENERGY_SYNC_S2C_ID, data);
-                }
-            }
+            sendEnergyPacket();
         }
     };
+
+    private void sendEnergyPacket() {
+        if (!world.isClient()) {
+            PacketByteBuf data = PacketByteBufs.create();
+            data.writeLong(energyStorage.amount);
+            data.writeBlockPos(pos);
+
+            for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, getPos())) {
+                ServerPlayNetworking.send(player, ModMessages.ENERGY_SYNC_S2C_ID, data);
+            }
+        }
+    }
 
     protected final PropertyDelegate propertyDelegate;
     private int progress = 0;
@@ -247,5 +251,6 @@ public class AdvancedWorkbenchBlockEntity extends BlockEntity implements Extende
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
         buf.writeBlockPos(this.pos);
+        sendEnergyPacket();
     }
 }
