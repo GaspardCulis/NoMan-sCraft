@@ -1,10 +1,12 @@
 package net.gasdev.nomanscraft.screen;
 
 import net.gasdev.nomanscraft.block.entity.ElectrolyserBlockEntity;
+import net.gasdev.nomanscraft.item.custom.Tank;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ArrayPropertyDelegate;
@@ -71,9 +73,9 @@ public class ElectrolyserScreenHandler extends ScreenHandler {
     }
 
     private void initSlots(Inventory inventory) {
-        this.addSlot(new Slot(inventory, 0, 32, 11));
-        this.addSlot(new Slot(inventory, 1, 106, 11));
-        this.addSlot(new Slot(inventory, 1, 122, 34));
+        this.addSlot(new BucketSlot(inventory, 0, 32, 11));
+        this.addSlot(new TankSlot(inventory, 1, 106, 11));
+        this.addSlot(new TankSlot(inventory, 2, 122, 34));
     }
 
     private void addPlayerInventory(PlayerInventory playerInventory) {
@@ -87,6 +89,34 @@ public class ElectrolyserScreenHandler extends ScreenHandler {
     private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
+        }
+    }
+
+    private class TankSlot extends Slot {
+        public TankSlot(Inventory inventory, int index, int x, int y) {
+            super(inventory, index, x, y);
+        }
+
+        @Override
+        public boolean canInsert(ItemStack stack) {
+            if (stack.getItem() instanceof Tank) {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    private class BucketSlot extends Slot {
+        public BucketSlot(Inventory inventory, int index, int x, int y) {
+            super(inventory, index, x, y);
+        }
+
+        @Override
+        public boolean canInsert(ItemStack stack) {
+            if (stack.getItem() instanceof BucketItem) {
+                return true;
+            }
+            return false;
         }
     }
 }
