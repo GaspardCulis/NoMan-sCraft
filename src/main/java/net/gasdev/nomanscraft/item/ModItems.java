@@ -30,7 +30,7 @@ public class ModItems {
             new Tank(new FabricItemSettings().maxCount(1)));
 
     public static final Item BLUEPRINT = registerItem("blueprint",
-            new Blueprint(new FabricItemSettings()));
+            new Blueprint(new FabricItemSettings().maxCount(1)));
 
 
     private static Item registerItem(String name, Item item) {
