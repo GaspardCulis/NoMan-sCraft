@@ -8,8 +8,11 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.gasdev.nomanscraft.item.ModItems;
+import net.gasdev.nomanscraft.item.custom.Tank;
 import net.gasdev.nomanscraft.networking.ModMessages;
 import net.gasdev.nomanscraft.screen.ElectrolyserScreenHandler;
+import net.gasdev.nomanscraft.utils.GasType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,6 +21,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.WaterFluid;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -36,6 +40,9 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class ElectrolyserBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
     public static final int INVENTORY_SIZE = 3;
+    public static final int DROPLET_PER_TICK = 256;
+    public static final int ENERGY_PER_TICK = 128;
+    public static final float OXYGEN_PER_DROPLET = 0.0005f;
     protected final PropertyDelegate propertyDelegate;
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
     public final long MAX_ENERGY = 30000;
@@ -169,21 +176,28 @@ public class ElectrolyserBlockEntity extends BlockEntity implements ExtendedScre
         energyStorage.amount = energy;
     }
 
+    public void extractEnergy(long amount) {
+        try(Transaction transaction = Transaction.openOuter()) {
+            energyStorage.extract(amount, transaction);
+            transaction.commit();
+        }
+    }
+
     public void setFluidLevel(FluidVariant fluidVariant, long fluidLevel) {
         fluidStorage.variant = fluidVariant;
         fluidStorage.amount = fluidLevel;
     }
 
-    public static void insertFluid(ElectrolyserBlockEntity blockEntity, Fluid fluid, long amount) {
+    public void insertFluid(Fluid fluid, long amount) {
         try (Transaction transaction = Transaction.openOuter()) {
-            blockEntity.fluidStorage.insert(FluidVariant.of(fluid), amount, transaction);
+            fluidStorage.insert(FluidVariant.of(fluid), amount, transaction);
             transaction.commit();
         }
     }
 
-    public static void extractFluid(ElectrolyserBlockEntity blockEntity, Fluid fluid, long amount) {
+    public void extractFluid(Fluid fluid, long amount) {
         try (Transaction transaction = Transaction.openOuter()) {
-            blockEntity.fluidStorage.extract(FluidVariant.of(fluid), amount, transaction);
+            fluidStorage.extract(FluidVariant.of(fluid), amount, transaction);
             transaction.commit();
         }
     }
@@ -192,10 +206,31 @@ public class ElectrolyserBlockEntity extends BlockEntity implements ExtendedScre
         if (world.isClient) return;
         if (!(e instanceof ElectrolyserBlockEntity)) return;
         ElectrolyserBlockEntity blockEntity = (ElectrolyserBlockEntity) e;
+        // Refilling
         if (blockEntity.getStack(0).getItem() == Items.WATER_BUCKET &&
                 blockEntity.fluidStorage.amount < blockEntity.fluidStorage.getCapacity()) {
             blockEntity.setStack(0, new ItemStack(Items.BUCKET));
-            insertFluid(blockEntity, Fluids.WATER, FluidConstants.BUCKET);
+            blockEntity.insertFluid(Fluids.WATER, FluidConstants.BUCKET);
+        }
+        // Electrolysis
+        ItemStack tank1 = blockEntity.getStack(1);
+        ItemStack tank2 = blockEntity.getStack(2);
+        if (tank1.getItem() == ModItems.TANK &&
+                tank2.getItem() == ModItems.TANK)
+        {
+            float oxygenIncrease = OXYGEN_PER_DROPLET * DROPLET_PER_TICK;
+            float hydrogenIncrease = oxygenIncrease * 2;
+            if (Tank.canBeFilled(tank1, GasType.OXYGEN) &&
+                    Tank.canBeFilled(tank2, GasType.HYDROGEN) &&
+                    blockEntity.fluidStorage.amount >= DROPLET_PER_TICK &&
+                    blockEntity.energyStorage.amount >= ENERGY_PER_TICK) {
+                Tank.setGasType(tank1, GasType.OXYGEN);
+                Tank.incrementCapacity(tank1, oxygenIncrease);
+                Tank.setGasType(tank2, GasType.HYDROGEN);
+                Tank.incrementCapacity(tank2, hydrogenIncrease);
+                blockEntity.extractFluid(Fluids.WATER, DROPLET_PER_TICK);
+                blockEntity.extractEnergy(ENERGY_PER_TICK);
+            }
         }
     }
 
