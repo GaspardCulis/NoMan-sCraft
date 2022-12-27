@@ -2,6 +2,7 @@ package net.gasdev.nomanscraft.item.custom;
 
 import net.gasdev.nomanscraft.NoMansCraft;
 import net.gasdev.nomanscraft.sounds.ModSounds;
+import net.gasdev.nomanscraft.utils.GasType;
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,7 +39,28 @@ public class Tank extends Item {
 
     public static void setCapacity(ItemStack stack, float capacity) {
         NbtCompound tag = stack.getOrCreateNbt();
-        tag.putFloat("capacity", capacity);
+        tag.putFloat("capacity", Math.min(capacity, 100f));
+    }
+
+    public static void incrementCapacity(ItemStack stack, float increment) {
+        setCapacity(stack, getCapacity(stack) + increment);
+    }
+
+    public static GasType getGasType(ItemStack stack) {
+        NbtCompound tag = stack.getOrCreateNbt();
+        if (!tag.contains("gasType")) {
+            tag.putString("gasType", "none");
+        }
+        return GasType.valueOf(tag.getString("gasType"));
+    }
+
+    public static void setGasType(ItemStack stack, GasType gasType) {
+        NbtCompound tag = stack.getOrCreateNbt();
+        tag.putString("gasType", gasType.getName());
+    }
+
+    public static boolean canBeFilled(ItemStack stack, GasType gasType) {
+        return GasType.isGasTypeCompatible(getGasType(stack), gasType) && getCapacity(stack) < 100f;
     }
 
     @Override
@@ -49,7 +71,11 @@ public class Tank extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(Text.of(""));
+        GasType gasType = getGasType(stack);
+
+        tooltip.add(gasType.getDisplayName().formatted(Formatting.GRAY));
+
+
         float capacity = getCapacity(stack);
 
         Formatting color;
