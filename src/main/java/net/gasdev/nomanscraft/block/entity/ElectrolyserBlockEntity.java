@@ -40,9 +40,10 @@ import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class ElectrolyserBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
     public static final int INVENTORY_SIZE = 3;
-    public static final int DROPLET_PER_TICK = 256;
+    public static final long MAX_FLUID_AMOUNT = FluidConstants.BUCKET * 4;
+    public static final int DROPLET_PER_TICK = 128;
     public static final int ENERGY_PER_TICK = 128;
-    public static final float OXYGEN_PER_DROPLET = 0.0005f;
+    public static final float OXYGEN_PER_DROPLET = 100.0f/MAX_FLUID_AMOUNT;
     protected final PropertyDelegate propertyDelegate;
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
     public final long MAX_ENERGY = 30000;
@@ -82,7 +83,7 @@ public class ElectrolyserBlockEntity extends BlockEntity implements ExtendedScre
 
         @Override
         protected long getCapacity(FluidVariant variant) {
-            return (FluidConstants.BUCKET)*4;
+            return MAX_FLUID_AMOUNT;
         }
 
         @Override

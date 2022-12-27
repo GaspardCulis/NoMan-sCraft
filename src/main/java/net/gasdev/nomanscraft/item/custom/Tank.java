@@ -90,7 +90,7 @@ public class Tank extends Item {
             tooltip.add(Text.translatable("tank.nomanscraft.empty").formatted(color));
             return;
         }
-        tooltip.add(Text.translatable("tank.nomanscraft.capacity", NumberFormat.getNumberInstance().format(capacity)).formatted(color));
+        tooltip.add(Text.translatable("tank.nomanscraft.capacity", NumberFormat.getNumberInstance().format(Math.round(capacity * 10.0) / 10.0)).formatted(color));
     }
 
     @Override
