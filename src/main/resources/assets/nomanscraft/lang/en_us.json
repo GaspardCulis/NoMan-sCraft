@@ -17,6 +17,10 @@
   "block.nomanscraft.advanced_workbench": "Advanced workbench",
   "block.nomanscraft.electrolyser": "Electrolyser",
 
+  "gas.nomanscraft.hydrogen": "Hydrogen",
+  "gas.nomanscraft.oxygen": "Oxygen",
+    "gas.nomanscraft.none": "",
+
   "itemGroup.nomanscraft.nomanscraft": "No Man's Craft",
 
   "container.nomanscraft.advanced_workbench": "Advanced Workbench",

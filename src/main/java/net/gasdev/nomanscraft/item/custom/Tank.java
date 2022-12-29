@@ -36,6 +36,9 @@ public class Tank extends Item {
     public static void setCapacity(ItemStack stack, float capacity) {
         NbtCompound tag = stack.getOrCreateNbt();
         tag.putFloat("capacity", Math.min(capacity, 100f));
+        if (capacity == 0) {
+            tag.remove("gasType");
+        }
     }
 
     public static void incrementCapacity(ItemStack stack, float increment) {
@@ -68,11 +71,9 @@ public class Tank extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         GasType gasType = getGasType(stack);
+        float capacity = getCapacity(stack);
 
         tooltip.add(gasType.getDisplayName().formatted(Formatting.GRAY));
-
-
-        float capacity = getCapacity(stack);
 
         Formatting color;
         if (capacity > 70f) {
