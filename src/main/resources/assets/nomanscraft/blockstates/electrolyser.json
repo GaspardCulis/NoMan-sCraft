@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": {"model":  "nomanscraft:block/electrolyser" },
+    "facing=south": {"model":  "nomanscraft:block/electrolyser",  "y":  180 },
+    "facing=west": {"model":  "nomanscraft:block/electrolyser",  "y":  270 },
+    "facing=east": {"model":  "nomanscraft:block/electrolyser",  "y":  90 }
+  }
+}
